@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane maxHeight="250.0" minHeight="250.0" prefHeight="250.0" prefWidth="300.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="swe4.gui.Startup">
+         <children>
+                  <Label layoutX="70.0" text="EURO-BET" textAlignment="CENTER" AnchorPane.leftAnchor="70.0" AnchorPane.rightAnchor="70.0">
+                     <font>
+                        <Font size="35.0" />
+                     </font>
+                  </Label>
+                  <TextField layoutX="50.0" layoutY="51.0" promptText="Username" AnchorPane.leftAnchor="50.0" AnchorPane.rightAnchor="50.0">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                     <padding>
+                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                     </padding>
+                  </TextField>
+                  <PasswordField layoutX="50.0" layoutY="103.0" promptText="Passwort" AnchorPane.leftAnchor="50.0" AnchorPane.rightAnchor="50.0">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                     <padding>
+                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                     </padding>
+                  </PasswordField>
+                  <Button layoutX="48.0" layoutY="154.0" mnemonicParsing="false" onMouseClicked="#handleSubmitButtonAction" prefHeight="37.0" prefWidth="200.0" text="Login" AnchorPane.leftAnchor="48.0" AnchorPane.rightAnchor="52.0">
+                     <padding>
+                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                     </padding>
+                  </Button>
+                  <Button layoutX="49.0" layoutY="199.0" mnemonicParsing="false" prefHeight="37.0" prefWidth="200.0" text="Registrieren" AnchorPane.leftAnchor="49.0" AnchorPane.rightAnchor="51.0">
+                     <padding>
+                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                     </padding>
+                  </Button>
+         </children>
+      </AnchorPane>
