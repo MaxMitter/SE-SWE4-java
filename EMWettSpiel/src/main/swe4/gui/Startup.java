@@ -1,16 +1,29 @@
 package swe4.gui;
 
 import javafx.application.Application;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Label;
+import javafx.scene.control.ListView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import swe4.gui.controller.GameListController;
+import swe4.gui.controller.GameListEntryController;
+import swe4.gui.controller.LoginController;
+
+import java.io.IOException;
 
 import static javafx.application.Application.launch;
 
 public class Startup extends Application {
+
     public static void main(String[] args) {
         try {
             launch(args);
@@ -19,18 +32,28 @@ public class Startup extends Application {
         }
     }
 
+    private static Stage stage = null;
+
     @Override
-    public void start(Stage stage) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("fxml/login.fxml"));
-        Scene scene = new Scene(root, 300, 250);
-        stage.setTitle("EURO-BET");
-        stage.setScene(scene);
-        stage.setResizable(false);
-        stage.show();
+    public void start(Stage startupStage) throws Exception {
+        LoadFxmlFiles();
+        Startup.stage = startupStage;
+        Startup.stage.setTitle("EURO-BET");
+        LoginController.LoadScene();
+        Startup.stage.show();
     }
 
-    @FXML
-    protected void handleSubmitButtonAction(MouseEvent event) {
-        System.out.println("pressed");
+    private void LoadFxmlFiles() throws IOException {
+        Parent loginFxml = FXMLLoader.load(getClass().getResource("fxml/login.fxml"));
+        LoginController.SetFxml(loginFxml);
+        Parent gameListFxml = FXMLLoader.load(getClass().getResource("fxml/gameList.fxml"));
+        GameListController.SetFxml(gameListFxml);
+
+        Parent gameListEntryFxml = FXMLLoader.load(getClass().getResource("fxml/gameListEntry.fxml"));
+        GameListEntryController.SetFxml(gameListEntryFxml);
+    }
+
+    public static void SetScene (Scene newScene) {
+        Startup.stage.setScene(newScene);
     }
 }

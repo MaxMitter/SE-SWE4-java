@@ -6,4 +6,5 @@ module startup {
    requires javafx.fxml;
 
    opens swe4.gui;
+   opens swe4.gui.controller;
 }

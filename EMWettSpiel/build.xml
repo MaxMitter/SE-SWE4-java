@@ -1,4 +1,4 @@
-<project name="Scribble" default="compile" basedir=".">
+<project name="EuroBet" default="compile" basedir=".">
 
   <property name="main.module" value="startup"/>
   <property name="main.class" value="swe4.gui.Startup"/>
