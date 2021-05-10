@@ -19,6 +19,7 @@ import swe4.gui.controller.GameListEntryController;
 import swe4.gui.controller.LoginController;
 
 import java.io.IOException;
+import java.net.URL;
 
 import static javafx.application.Application.launch;
 
@@ -33,6 +34,7 @@ public class Startup extends Application {
     }
 
     private static Stage stage = null;
+    public static URL gameListEntryUrl = null;
 
     @Override
     public void start(Stage startupStage) throws Exception {
@@ -49,7 +51,8 @@ public class Startup extends Application {
         Parent gameListFxml = FXMLLoader.load(getClass().getResource("fxml/gameList.fxml"));
         GameListController.SetFxml(gameListFxml);
 
-        Parent gameListEntryFxml = FXMLLoader.load(getClass().getResource("fxml/gameListEntry.fxml"));
+        gameListEntryUrl = getClass().getResource("fxml/gameListEntry.fxml");
+        Parent gameListEntryFxml = FXMLLoader.load(gameListEntryUrl);
         GameListEntryController.SetFxml(gameListEntryFxml);
     }
 

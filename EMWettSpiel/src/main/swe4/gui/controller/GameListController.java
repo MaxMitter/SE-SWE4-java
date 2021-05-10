@@ -14,6 +14,7 @@ public class GameListController {
     public static Scene scene = null;
     public static Parent rootElement = null;
     public static ObservableList<Node> gameList = null;
+    public ListView gameListView;
 
     public static void SetFxml(Parent node) {
         rootElement = node;
@@ -35,18 +36,14 @@ public class GameListController {
 
     private void LoadGameList(Parent fxml) throws IOException {
         var root = (AnchorPane) fxml;
-        var box = (VBox) root.getChildren().get(1);
-        var list = (ListView<Node>) box.getChildren().get(0);
+        var list = (ListView<Node>) root.getChildren().get(1);
 
         if (gameList == null) {
             gameList = FXCollections.observableArrayList();
         }
 
         for (int i = 0; i < 10; i++) {
-            var gameListEntry = (AnchorPane) GameListEntryController.GetElement();
-            var gle = (Label) gameListEntry.getChildren().get(0);
-            gle.setText("Testgame " + i);
-            gameList.add(gameListEntry);
+            gameList.add(GameListEntryController.GetElement());
         }
 
         list.setItems(gameList);

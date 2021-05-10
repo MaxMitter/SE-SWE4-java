@@ -1,18 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
-   <children>
-      <Label layoutX="218.0" layoutY="14.0" text="EURO-BET" AnchorPane.leftAnchor="218.0" AnchorPane.rightAnchor="218.0">
-         <font>
-            <Font size="36.0" />
-         </font></Label>
-      <VBox layoutX="14.0" layoutY="67.0" prefHeight="323.0" prefWidth="572.0" style="-fx-border-color: black;" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0">
-         <children>
-            <ListView fx:id="gameList" prefHeight="322.0" prefWidth="570.0" />
-         </children></VBox>
-   </children>
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0"
+            prefWidth="1280.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="swe4.gui.controller.GameListController">
+   <Label layoutX="218.0" layoutY="14.0" text="EURO-BET" AnchorPane.leftAnchor="218.0" AnchorPane.rightAnchor="218.0">
+      <font>
+         <Font size="36.0"/>
+      </font>
+   </Label>
+   <ListView fx:id="gameListView" prefWidth="1250.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0"
+             AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="75.0"/>
+   <ImageView fitHeight="45.0" fitWidth="45.0" layoutX="541.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true"
+              AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="14.0">
+      <image>
+         <Image url="@../img/userIcon.png"/>
+      </image>
+   </ImageView>
 </AnchorPane>
