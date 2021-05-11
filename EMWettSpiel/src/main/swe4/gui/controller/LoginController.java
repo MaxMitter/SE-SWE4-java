@@ -16,6 +16,7 @@ import javafx.scene.paint.Paint;
 import javafx.stage.Stage;
 import swe4.gui.Exceptions.UserNotFoundException;
 import swe4.gui.Startup;
+import swe4.gui.data.Entities.Role;
 import swe4.gui.data.Repository;
 
 import java.io.IOException;
@@ -49,9 +50,12 @@ public class LoginController {
         if (btnLogin.isVisible()) {
             try {
                 boolean loginSuccess = Repository.Instance.isValidLogin(txt_UserName.getText(), firstPassword.getText());
-                if (loginSuccess)
-                    GameListController.LoadScene();
-                else {
+                if (loginSuccess) {
+                    if (Repository.Instance.getRoleByUserName(txt_UserName.getText()) == Role.ADMIN)
+                        AdminViewController.LoadScene();
+                    else
+                        GameListController.LoadScene();
+                } else {
                     lbl_Error.setVisible(true);
                     lbl_Error.setText("Invalid Password");
                 }

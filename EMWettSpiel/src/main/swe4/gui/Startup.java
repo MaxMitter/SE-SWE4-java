@@ -14,6 +14,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import swe4.gui.controller.AdminViewController;
 import swe4.gui.controller.GameListController;
 import swe4.gui.controller.GameListEntryController;
 import swe4.gui.controller.LoginController;
@@ -50,6 +51,8 @@ public class Startup extends Application {
         LoginController.SetFxml(loginFxml);
         Parent gameListFxml = FXMLLoader.load(getClass().getResource("fxml/gameList.fxml"));
         GameListController.SetFxml(gameListFxml);
+        Parent adminViewFxml = FXMLLoader.load(getClass().getResource("fxml/adminView.fxml"));
+        AdminViewController.SetFxml(adminViewFxml);
 
         gameListEntryUrl = getClass().getResource("fxml/gameListEntry.fxml");
         Parent gameListEntryFxml = FXMLLoader.load(gameListEntryUrl);

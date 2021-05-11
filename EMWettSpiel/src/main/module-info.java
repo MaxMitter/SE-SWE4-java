@@ -7,4 +7,5 @@ module startup {
 
    opens swe4.gui;
    opens swe4.gui.controller;
+   opens swe4.gui.data.Entities;
 }

@@ -7,6 +7,8 @@ import javafx.scene.*;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import swe4.gui.Startup;
+import swe4.gui.data.Entities.Game;
+import swe4.gui.data.Repository;
 
 import java.io.IOException;
 
@@ -14,7 +16,6 @@ public class GameListController {
     public static Scene scene = null;
     public static Parent rootElement = null;
     public static ObservableList<Node> gameList = null;
-    public ListView gameListView;
 
     public static void SetFxml(Parent node) {
         rootElement = node;
@@ -42,9 +43,17 @@ public class GameListController {
             gameList = FXCollections.observableArrayList();
         }
 
-        for (int i = 0; i < 10; i++) {
-            gameList.add(GameListEntryController.GetElement());
+        var games = Repository.Instance.getAllGames();
+
+        for (Game g : games) {
+            var element = GameListEntryController.GetElement(g);
+            gameList.add(element);
         }
+
+//        for (int i = 0; i < 10; i++) {
+//            var element = GameListEntryController.GetElement();
+//            gameList.add(element);
+//        }
 
         list.setItems(gameList);
         list.scrollTo(5);
