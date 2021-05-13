@@ -1,5 +1,7 @@
 package swe4.gui.data;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import swe4.gui.Exceptions.UserAlreadyExistsException;
 import swe4.gui.Exceptions.UserNotFoundException;
 import swe4.gui.data.Entities.Game;
@@ -100,4 +102,11 @@ public class Repository {
     }
 
     public ArrayList<User> getAllUsers() { return mockUsers; }
+
+    public ObservableList<Role> getAllRoles() {
+        ObservableList<Role> list = FXCollections.observableArrayList();
+        list.add(Role.USER);
+        list.add(Role.ADMIN);
+        return list;
+    }
 }

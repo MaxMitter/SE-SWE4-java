@@ -34,6 +34,11 @@ public class User {
         return role;
     }
 
+    public String getPassword() {
+        var len = password.length();
+        return "*".repeat(len);
+    }
+
     public boolean checkPassword(String pw) {
         return password.equals(pw);
     }

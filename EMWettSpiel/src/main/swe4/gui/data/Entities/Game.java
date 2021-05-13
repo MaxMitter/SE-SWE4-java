@@ -49,4 +49,28 @@ public class Game {
     public int getScoreT2() {
         return scoreT2;
     }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setT1(Team t1) {
+        this.t1 = t1;
+    }
+
+    public void setT2(Team t2) {
+        this.t2 = t2;
+    }
+
+    public void setTime(LocalDateTime time) {
+        this.time = time;
+    }
+
+    public void setScoreT1(int scoreT1) {
+        this.scoreT1 = scoreT1;
+    }
+
+    public void setScoreT2(int scoreT2) {
+        this.scoreT2 = scoreT2;
+    }
 }
