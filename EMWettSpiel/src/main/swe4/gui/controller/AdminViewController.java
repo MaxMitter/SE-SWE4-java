@@ -237,4 +237,10 @@ public class AdminViewController {
             list_Users.add(new User(1, txt_UserName.getText(), txt_UserPassword.getText(), cbox_UserRole.getValue()));
         }
     }
+
+    @FXML
+    public void btnLogoutClick() {
+        Startup.SetScene(LoginController.scene);
+        Startup.Logout();
+    }
 }

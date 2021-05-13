@@ -49,12 +49,14 @@ public class LoginController {
         lbl_Error.setText("");
         if (btnLogin.isVisible()) {
             try {
-                boolean loginSuccess = Repository.Instance.isValidLogin(txt_UserName.getText(), firstPassword.getText());
-                if (loginSuccess) {
+                int login = Repository.Instance.Login(txt_UserName.getText(), firstPassword.getText());
+                if (login >= 0) {
                     if (Repository.Instance.getRoleByUserName(txt_UserName.getText()) == Role.ADMIN)
                         AdminViewController.LoadScene();
                     else
                         GameListController.LoadScene();
+
+                    Startup.Login(login);
                 } else {
                     lbl_Error.setVisible(true);
                     lbl_Error.setText("Invalid Password");

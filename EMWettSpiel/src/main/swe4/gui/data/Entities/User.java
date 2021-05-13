@@ -2,10 +2,11 @@ package swe4.gui.data.Entities;
 
 public class User {
 
-    private int id;
+    private final int id;
     private String userName;
     private String password;
     private Role role;
+    private int score;
 
     public User(String name, String password) {
         this(0, name, password);
@@ -20,6 +21,7 @@ public class User {
         userName = name;
         this.password = password;
         role = r;
+        score = 0;
     }
 
     public int getId() {
@@ -37,6 +39,18 @@ public class User {
     public String getPassword() {
         var len = password.length();
         return "*".repeat(len);
+    }
+
+    public void addScore(int s) {
+        score += s;
+    }
+
+    public int getScore() {
+        return score;
+    }
+
+    public void setUserName(String name) {
+        userName = name;
     }
 
     public boolean checkPassword(String pw) {

@@ -19,7 +19,7 @@
                      <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                   </HBox.margin>
                </Label>
-               <Circle fx:id="crcl_live" visible="false" fill="#eb1d1d" radius="7.0" stroke="BLACK" strokeType="INSIDE">
+               <Circle fx:id="crcl_live" fill="#eb1d1d" radius="7.0" stroke="BLACK" strokeType="INSIDE" visible="false">
                   <HBox.margin>
                      <Insets bottom="10.0" left="10.0" right="10.0" top="15.0" />
                   </HBox.margin>
@@ -32,11 +32,19 @@
                      <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                   </HBox.margin>
                </Label>
+               <Label fx:id="lbl_userPoints" text="Punkte: " HBox.hgrow="ALWAYS">
+                  <font>
+                     <Font size="18.0" />
+                  </font>
+                  <HBox.margin>
+                     <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                  </HBox.margin>
+               </Label>
             </children>
          </HBox>
          <HBox prefHeight="100.0" VBox.vgrow="ALWAYS">
             <children>
-               <Label fx:id="lbl_team1" prefHeight="33.0" text="Team 1">
+               <Label fx:id="lbl_team1" onMouseClicked="#lblTeam1Clicked" prefHeight="33.0" text="Team 1">
                   <font>
                      <Font size="18.0" />
                   </font>
@@ -57,7 +65,7 @@
          </HBox>
          <HBox prefHeight="100.0" VBox.vgrow="ALWAYS">
             <children>
-               <Label fx:id="lbl_team2" prefHeight="33.0" text="Team 2">
+               <Label fx:id="lbl_team2" onMouseClicked="#lblTeam2Clicked" prefHeight="33.0" text="Team 2">
                   <font>
                      <Font size="18.0" />
                   </font>
@@ -78,4 +86,5 @@
          </HBox>
       </children>
    </VBox>
+   <Label fx:id="lbl_gameId" visible="false" />
 </AnchorPane>

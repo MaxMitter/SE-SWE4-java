@@ -36,6 +36,7 @@ public class Startup extends Application {
 
     private static Stage stage = null;
     public static URL gameListEntryUrl = null;
+    private static int currentUser = -1;
 
     @Override
     public void start(Stage startupStage) throws Exception {
@@ -44,6 +45,18 @@ public class Startup extends Application {
         Startup.stage.setTitle("EURO-BET");
         LoginController.LoadScene();
         Startup.stage.show();
+    }
+
+    public static void Login(int userId) {
+        currentUser = userId;
+    }
+
+    public static void Logout() {
+        currentUser = -1;
+    }
+
+    public static int GetCurrentUser() {
+        return currentUser;
     }
 
     private void LoadFxmlFiles() throws IOException {

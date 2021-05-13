@@ -1,6 +1,8 @@
 package swe4.gui.data.Entities;
 
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
+import java.time.temporal.TemporalUnit;
 
 public class Game {
 
@@ -17,7 +19,7 @@ public class Game {
         name = Name;
         t1 = team1;
         t2 = team2;
-        time = dateTime;
+        time = dateTime.truncatedTo(ChronoUnit.MINUTES);
         scoreT1 = 0;
         scoreT2 = 0;
     }

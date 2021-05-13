@@ -2,7 +2,7 @@ package swe4.gui.controller;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.fxml.FXMLLoader;
+import javafx.fxml.FXML;
 import javafx.scene.*;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
@@ -11,6 +11,7 @@ import swe4.gui.data.Entities.Game;
 import swe4.gui.data.Repository;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
 
 public class GameListController {
     public static Scene scene = null;
@@ -45,17 +46,23 @@ public class GameListController {
 
         var games = Repository.Instance.getAllGames();
 
+        int earliestLiveGame = 0;
         for (Game g : games) {
             var element = GameListEntryController.GetElement(g);
+            if (g.getTime().isBefore(LocalDateTime.now()) &&
+                    g.getTime().plusMinutes(90).isBefore(LocalDateTime.now())) {
+                earliestLiveGame++;
+            }
             gameList.add(element);
         }
 
-//        for (int i = 0; i < 10; i++) {
-//            var element = GameListEntryController.GetElement();
-//            gameList.add(element);
-//        }
-
         list.setItems(gameList);
-        list.scrollTo(5);
+        list.scrollTo(earliestLiveGame);
+    }
+
+    @FXML
+    public void btnLogoutClick() {
+        Startup.Logout();
+        Startup.SetScene(LoginController.scene);
     }
 }
