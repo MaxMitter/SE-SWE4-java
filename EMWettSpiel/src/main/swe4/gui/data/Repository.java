@@ -8,7 +8,6 @@ import swe4.gui.data.Entities.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Comparator;
-import java.util.Map;
 
 public class Repository {
 
@@ -47,9 +46,12 @@ public class Repository {
         mockGames.add(new Game(3, "Group Phase B", getTeamById(1), getTeamById(2), LocalDateTime.now()));
         mockGames.add(new Game(4, "Group Phase B", getTeamById(1), getTeamById(3), LocalDateTime.now()));
         mockGames.add(new Game(5, "Group Phase B", getTeamById(2), getTeamById(3), LocalDateTime.now()));
-        mockGames.add(new Game(6, "Group Phase C", getTeamById(2), getTeamById(3), LocalDateTime.parse("2021-05-01T15:00:00")));
-        mockGames.add(new Game(7, "Group Phase C", getTeamById(2), getTeamById(3), LocalDateTime.parse("2021-05-01T15:00:00")));
+        mockGames.add(new Game(6, "Group Phase C", getTeamById(0), getTeamById(3), LocalDateTime.parse("2021-05-01T15:00:00")));
+        mockGames.add(new Game(7, "Group Phase C", getTeamById(1), getTeamById(3), LocalDateTime.parse("2021-05-01T15:00:00")));
         mockGames.add(new Game(8, "Group Phase C", getTeamById(2), getTeamById(3), LocalDateTime.parse("2021-05-01T15:00:00")));
+        mockGames.add(new Game(8, "Group Phase D", getTeamById(1), getTeamById(3), LocalDateTime.parse("2021-07-01T15:00:00")));
+        mockGames.add(new Game(8, "Group Phase D", getTeamById(2), getTeamById(3), LocalDateTime.parse("2021-07-01T15:00:00")));
+        mockGames.add(new Game(8, "Group Phase D", getTeamById(0), getTeamById(3), LocalDateTime.parse("2021-07-01T15:00:00")));
         mockGames.sort(new Comparator<Game>() {
             @Override
             public int compare(Game o1, Game o2) {
@@ -190,6 +192,14 @@ public class Repository {
 
     public ArrayList<Game> getAllGames() {
         return mockGames;
+    }
+
+    public Game GetGameById(int gameId) {
+        for (Game g : mockGames) {
+            if (g.getId() == gameId)
+                return g;
+        }
+        return null;
     }
 
     public ArrayList<Team> getAllTeams() {

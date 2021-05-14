@@ -5,7 +5,6 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.*;
 import javafx.scene.control.*;
-import javafx.scene.layout.*;
 import swe4.gui.Startup;
 import swe4.gui.data.Entities.Game;
 import swe4.gui.data.Entities.Pair;
@@ -15,7 +14,6 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.Map;
 
 public class GameListController {
     public static Scene scene = null;
@@ -30,11 +28,7 @@ public class GameListController {
     }
 
     public static void LoadScene() {
-        if (scene == null) {
-            scene = new Scene(rootElement);
-        }
-
-        Startup.SetScene(scene);
+        Startup.SetScene(new Scene(rootElement));
     }
 
     @FXML

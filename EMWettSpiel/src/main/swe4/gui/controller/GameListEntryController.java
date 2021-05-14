@@ -16,6 +16,7 @@ import swe4.gui.data.Repository;
 import java.io.*;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Date;
 import java.util.concurrent.locks.Lock;
 
 public class GameListEntryController {
@@ -32,6 +33,7 @@ public class GameListEntryController {
     public Label lbl_team2Score;
     public Label lbl_gameId;
     public Label lbl_userPoints;
+    public Label lbl_draw;
 
     public static void SetFxml(Parent node) {
         rootElement = node;
@@ -47,19 +49,23 @@ public class GameListEntryController {
         Parent newElem = rootElement;
         rootElement = FXMLLoader.load(Startup.gameListEntryUrl);
         boolean isLive = false;
+        boolean isOver = false;
 
         VBox box = (VBox) newElem.getChildrenUnmodifiable().get(0);
 
         var gameInfo = (HBox) box.getChildren().get(0);
         // Info label for Time
         var time = (Label) gameInfo.getChildren().get(0);
-        time.setText(g.getTime().format(DateTimeFormatter.ISO_LOCAL_TIME));
+        time.setText(g.getTime().format(DateTimeFormatter.ISO_LOCAL_DATE) + " " + g.getTime().format(DateTimeFormatter.ISO_LOCAL_TIME));
         // Red Button if the Game is happening right now
-        if (g.getTime().isBefore(LocalDateTime.now()) &&
-            g.getTime().plusMinutes(90).isAfter(LocalDateTime.now())) {
-            isLive = true;
-            var pointLive = (Circle) gameInfo.getChildren().get(1);
-            pointLive.setVisible(true);
+        if (g.getTime().isBefore(LocalDateTime.now())) {
+            if (g.getTime().plusMinutes(90).isAfter(LocalDateTime.now())) {
+                isLive = true;
+                var pointLive = (Circle) gameInfo.getChildren().get(1);
+                pointLive.setVisible(true);
+            } else {
+                isOver = true;
+            }
         }
         // Name label for the current Game
         var gameName = (Label) gameInfo.getChildren().get(2);
@@ -67,8 +73,10 @@ public class GameListEntryController {
         // Label for the points the user got for this game
         var pointsLabel = (Label)gameInfo.getChildren().get(3);
         if (!isLive) {
-            if (g.getTime().isBefore(LocalDateTime.now())) {
+            if (isOver) {
                 pointsLabel.setText("Punkte: " + Repository.Instance.GetBetPoints(Startup.GetCurrentUser(), g.getId()));
+            } else {
+                pointsLabel.setText("");
             }
         } else {
             pointsLabel.setText("");
@@ -79,33 +87,45 @@ public class GameListEntryController {
         var t1Name = (Label)team1.getChildren().get(0);
         t1Name.setText(g.getT1().getName());
         // Team 1 score if game is live
-        if (isLive) {
+        if (isLive || isOver) {
             var t1Score = (Label)team1.getChildren().get(2);
             t1Score.setText(Integer.toString(g.getScoreT1()));
         }
-        var team2 = (HBox) box.getChildren().get(2);
+        var team2 = (HBox) box.getChildren().get(3);
         // Team 2 Name label
         var t2Name = (Label)team2.getChildren().get(0);
         t2Name.setText(g.getT2().getName());
         // Team 2 score if game is live
-        if (isLive) {
+        if (isLive || isOver) {
             var t2Score = (Label)team2.getChildren().get(2);
             t2Score.setText(Integer.toString(g.getScoreT2()));
         }
 
-        var lbl = (Label)rootElement.getChildrenUnmodifiable().get(1);
+        var lbl = (Label)newElem.getChildrenUnmodifiable().get(1);
         lbl.setText(Integer.toString(g.getId()));
 
         return newElem;
     }
 
+    private boolean canBetOnGame(int gameId) {
+        boolean canBet = true;
+        var g = Repository.Instance.GetGameById(gameId);
+        if (g.getTime().isAfter(LocalDateTime.now())) {
+            return true;
+        } else  {
+            return g.getTime().plusMinutes(90).isAfter(LocalDateTime.now());
+        }
+    }
+
     @FXML
     public void lblTeam1Clicked(MouseEvent event) {
-        if (crcl_live.isVisible()) {
+        if (canBetOnGame(Integer.parseInt(lbl_gameId.getText()))) {
             if (lbl_team1.getStyle().contains("green")) {
                 lbl_team1.setStyle("-fx-background-color: none;");
             } else {
                 lbl_team1.setStyle("-fx-background-color: green;");
+                lbl_team2.setStyle("-fx-background-color: none;");
+                lbl_draw.setStyle("-fx-background-color: none;");
             }
         }
         UpdateBets();
@@ -113,37 +133,37 @@ public class GameListEntryController {
 
     @FXML
     public void lblTeam2Clicked(MouseEvent event) {
-        if (crcl_live.isVisible()) {
+        if (canBetOnGame(Integer.parseInt(lbl_gameId.getText()))) {
             if (lbl_team2.getStyle().contains("green")) {
                 lbl_team2.setStyle("-fx-background-color: none;");
             } else {
                 lbl_team2.setStyle("-fx-background-color: green;");
+                lbl_team1.setStyle("-fx-background-color: none;");
+                lbl_draw.setStyle("-fx-background-color: none;");
+            }
+        }
+        UpdateBets();
+    }
+
+    @FXML
+    public void lblDrawClicked(MouseEvent mouseEvent) {
+        if (canBetOnGame(Integer.parseInt(lbl_gameId.getText()))) {
+            if (lbl_draw.getStyle().contains("green")) {
+                lbl_draw.setStyle("-fx-background-color: none;");
+            } else {
+                lbl_draw.setStyle("-fx-background-color: green;");
+                lbl_team1.setStyle("-fx-background-color: none;");
+                lbl_team2.setStyle("-fx-background-color: none;");
             }
         }
         UpdateBets();
     }
 
     public void UpdateBets() {
-        int bet = 0;
-        if (lbl_team1.getStyle().contains("green")) bet = 1;
-        if (lbl_team2.getStyle().contains("green")) bet += 2;
-
-        Bet b;
-        switch (bet) {
-            case 1:
-                b = Bet.TEAM1;
-                break;
-            case 2:
-                b = Bet.TEAM2;
-                break;
-            case 3:
-                b = Bet.DRAW;
-                break;
-            default:
-                b = Bet.NONE;
-                break;
-        }
-
+        Bet b = Bet.NONE;
+        if (lbl_team1.getStyle().contains("green")) b = Bet.TEAM1;
+        if (lbl_team2.getStyle().contains("green")) b = Bet.TEAM2;
+        if (lbl_draw.getStyle().contains("green"))  b = Bet.DRAW;
         Repository.Instance.AddBet(Startup.GetCurrentUser(), Integer.parseInt(lbl_gameId.getText()), b);
     }
 }

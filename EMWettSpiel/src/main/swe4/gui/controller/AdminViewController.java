@@ -2,12 +2,14 @@ package swe4.gui.controller;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.*;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
+import javafx.util.Callback;
 import javafx.util.StringConverter;
 import javafx.util.converter.IntegerStringConverter;
 import swe4.gui.Startup;
@@ -69,6 +71,7 @@ public class AdminViewController {
     public TableColumn<Game, LocalDateTime> col_Games_time;
     public TableColumn<Game, Integer> col_Games_scoreT1;
     public TableColumn<Game, Integer> col_Games_scoreT2;
+    public TableColumn<Game, Void> col_Games_delete;
 
     public TableColumn<Team, Integer> col_Teams_id;
     public TableColumn<Team, String> col_Teams_name;
@@ -83,10 +86,7 @@ public class AdminViewController {
     }
 
     public static void LoadScene() {
-        if (scene == null) {
-            scene = new Scene(rootElement);
-        }
-        Startup.SetScene(scene);
+        Startup.SetScene(new Scene(rootElement));
     }
 
     @FXML
@@ -162,6 +162,32 @@ public class AdminViewController {
             x.setScoreT2(value);
             tbl_Games.refresh();
         });
+
+        col_Games_delete.setCellFactory(new Callback<TableColumn<Game, Void>, TableCell<Game, Void>>() {
+            @Override
+            public TableCell<Game, Void> call(TableColumn<Game, Void> gameVoidTableColumn) {
+                final TableCell<Game, Void> cell = new TableCell<>() {
+                    private final Button btn = new Button("Löschen");
+                    {
+                        btn.setOnAction((ActionEvent event) -> {
+                            Game g = getTableView().getItems().get(getIndex());
+                            list_Games.remove(g);
+                        });
+                    }
+
+                    @Override
+                    protected void updateItem(Void unused, boolean empty) {
+                        super.updateItem(unused, empty);
+                        if (empty)
+                            setGraphic(null);
+                        else
+                            setGraphic(btn);
+                    }
+                };
+                return cell;
+            }
+        });
+
         tbl_Games.setItems(list_Games);
     }
 
