@@ -49,6 +49,8 @@ public class AdminViewController {
     public TextField txt_TeamName;
 
     public TextField txt_UserName;
+    public TextField txt_FirstName;
+    public TextField txt_LastName;
     public PasswordField txt_UserPassword;
     public ComboBox<Role> cbox_UserRole;
 
@@ -194,15 +196,23 @@ public class AdminViewController {
         cbox_T1.setStyle("-fx-border-color: none;");
         cbox_T2.setStyle("-fx-border-color: none;");
 
+        boolean isValid = true;
+
         if (txt_GameName.getText().isEmpty()) {
             txt_GameName.setStyle("-fx-border-color: red;");
-        } else if (txt_GameTime.getText().isEmpty()) {
+            isValid = false;
+        } if (txt_GameTime.getText().isEmpty()) {
             txt_GameTime.setStyle("-fx-border-color: red;");
-        } else if (cbox_T1.getValue() == null) {
+            isValid = false;
+        } if (cbox_T1.getValue() == null) {
             cbox_T1.setStyle("-fx-border-color: red;");
-        } else if (cbox_T2.getValue() == null) {
+            isValid = false;
+        } if (cbox_T2.getValue() == null) {
             cbox_T2.setStyle("-fx-border-color: red;");
-        } else {
+            isValid = false;
+        }
+
+        if (isValid) {
             // TODO add to repository
             try {
                 list_Games.add(new Game(1, txt_GameName.getText(), cbox_T1.getValue(), cbox_T2.getValue(), LocalDateTime.parse(txt_GameTime.getText())));
@@ -226,15 +236,32 @@ public class AdminViewController {
         txt_UserName.setStyle("-fx-border-color: none;");
         txt_UserPassword.setStyle("-fx-border-color: none;");
         cbox_UserRole.setStyle("-fx-border-color: none;");
+        txt_FirstName.setStyle("-fx-border-color: none;");
+        txt_LastName.setStyle("-fx-border-color: none;");
+
+        boolean isValid = true;
 
         if (txt_UserName.getText().isEmpty()) {
             txt_UserName.setStyle("-fx-border-color: red;");
-        } else if (txt_UserPassword.getText().isEmpty()) {
+            isValid = false;
+        } if (txt_UserPassword.getText().isEmpty()) {
             txt_UserPassword.setStyle("-fx-border-color: red;");
-        } else if (cbox_UserRole.getValue() == null) {
+            isValid = false;
+        } if (cbox_UserRole.getValue() == null) {
             cbox_UserRole.setStyle("-fx-border-color: red;");
-        } else {
-            list_Users.add(new User(1, txt_UserName.getText(), txt_UserPassword.getText(), cbox_UserRole.getValue()));
+            isValid = false;
+        } if (txt_FirstName.getText().isEmpty()){
+            txt_FirstName.setStyle("-fx-border-color: red;");
+            isValid = false;
+        } if (txt_LastName.getText().isEmpty()) {
+            txt_LastName.setStyle("-fx-border-color: red;");
+            isValid = false;
+        }
+
+
+
+        if (isValid) {
+            list_Users.add(new User(1, txt_FirstName.getText(), txt_LastName.getText(), txt_UserName.getText(), txt_UserPassword.getText(), cbox_UserRole.getValue()));
         }
     }
 

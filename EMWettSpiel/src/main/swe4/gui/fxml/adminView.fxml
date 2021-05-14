@@ -67,7 +67,7 @@
             <Font size="36.0" />
         </font>
     </Label>
-    <HBox fx:id="box_AddGame" layoutY="623.0" prefHeight="83.0" prefWidth="1280.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+    <HBox fx:id="box_AddGame" layoutY="623.0" prefHeight="83.0" prefWidth="1280.0" visible="false" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
         <VBox alignment="CENTER_LEFT" prefHeight="200.0" prefWidth="100.0" HBox.hgrow="ALWAYS">
             <TextField fx:id="txt_GameName" promptText="Bezeichnung">
                 <font>
@@ -131,7 +131,7 @@
          </VBox>
       </children>
    </HBox>
-    <HBox fx:id="box_AddUser" layoutX="20.0" layoutY="643.0" prefHeight="83.0" prefWidth="1280.0" visible="false" AnchorPane.bottomAnchor="10.0">
+    <HBox fx:id="box_AddUser" layoutX="20.0" layoutY="643.0" prefHeight="83.0" prefWidth="1280.0" AnchorPane.bottomAnchor="10.0">
       <children>
          <VBox alignment="CENTER_LEFT" prefHeight="200.0" prefWidth="100.0" HBox.hgrow="ALWAYS">
             <children>
@@ -151,6 +151,26 @@
                      <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                   </VBox.margin>
                </PasswordField>
+            </children>
+         </VBox>
+         <VBox prefHeight="200.0" prefWidth="100.0" HBox.hgrow="ALWAYS">
+            <children>
+               <TextField fx:id="txt_FirstName" promptText="Vorname">
+                  <font>
+                     <Font size="16.0" />
+                  </font>
+                  <VBox.margin>
+                     <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                  </VBox.margin>
+               </TextField>
+               <TextField fx:id="txt_LastName" promptText="Nachname">
+                  <VBox.margin>
+                     <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                  </VBox.margin>
+                  <font>
+                     <Font size="16.0" />
+                  </font>
+               </TextField>
             </children>
          </VBox>
          <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" HBox.hgrow="ALWAYS">

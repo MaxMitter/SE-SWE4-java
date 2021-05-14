@@ -3,6 +3,8 @@ package swe4.gui.data.Entities;
 public class User {
 
     private final int id;
+    private String firstName;
+    private String lastName;
     private String userName;
     private String password;
     private Role role;
@@ -13,12 +15,14 @@ public class User {
     }
 
     public User(int id, String name, String password) {
-        this(id, name, password, Role.USER);
+        this(id, "Max", "Mustermann", name, password, Role.USER);
     }
 
-    public User(int id, String name, String password, Role r) {
+    public User(int id, String fname, String lname, String uname, String password, Role r) {
         this.id = id;
-        userName = name;
+        firstName = fname;
+        lastName = lname;
+        userName = uname;
         this.password = password;
         role = r;
         score = 0;
@@ -47,6 +51,14 @@ public class User {
 
     public int getScore() {
         return score;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
     }
 
     public void setUserName(String name) {

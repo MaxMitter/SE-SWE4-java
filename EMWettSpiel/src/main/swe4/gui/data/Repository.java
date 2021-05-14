@@ -8,6 +8,7 @@ import swe4.gui.data.Entities.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.Map;
 
 public class Repository {
 
@@ -30,7 +31,7 @@ public class Repository {
 
     private static Repository instance = null;
 
-    public Repository Instance() { if (instance == null) { instance = new Repository(); } return instance;}
+    public Repository Instance() { if (instance == null) { instance = new Repository(); } return instance; }
 
     private void InitMockTeams() {
         mockTeams.add(new Team(0, "CBT"));
@@ -58,19 +59,19 @@ public class Repository {
     }
 
     private void InitMockUsers() {
-        mockUsers.add(new User(0, "", "", Role.USER));
-        mockUsers.add(new User(1, "admin", "admin", Role.ADMIN));
+        mockUsers.add(new User(0, "", "", "", "", Role.USER));
+        mockUsers.add(new User(1, "Admin", "Main", "admin", "admin", Role.ADMIN));
         mockUsers.add(new User(2, "Test1", "test"));
         mockUsers.add(new User(3, "Test2", "test"));
     }
 
     private void InitBets() {
-        mockBets.add(new UserBetsOnGame(0, 0, Bet.TEAM1));
-        mockBets.add(new UserBetsOnGame(1, 0, Bet.TEAM2));
-        mockBets.add(new UserBetsOnGame(2, 0, Bet.DRAW));
-        mockBets.add(new UserBetsOnGame(3, 2, Bet.TEAM1));
-        mockBets.add(new UserBetsOnGame(4, 2, Bet.TEAM2));
-        mockBets.add(new UserBetsOnGame(5, 2, Bet.DRAW));
+        mockBets.add(new UserBetsOnGame(6, 0, Bet.TEAM1));
+        mockBets.add(new UserBetsOnGame(6, 0, Bet.TEAM2));
+        mockBets.add(new UserBetsOnGame(7, 0, Bet.DRAW));
+        mockBets.add(new UserBetsOnGame(7, 2, Bet.TEAM1));
+        mockBets.add(new UserBetsOnGame(7, 2, Bet.TEAM2));
+        mockBets.add(new UserBetsOnGame(7, 2, Bet.DRAW));
     }
 
     public void AddBet(int userId, int gameId, Bet bet) {
@@ -97,6 +98,48 @@ public class Repository {
         }
 
         return 0;
+    }
+
+    public void FinalizeBets(int gameId, Bet b) {
+        for (UserBetsOnGame ub : mockBets) {
+            if (ub.getGameId() == gameId) {
+                ub.calcPoints(b);
+                AddPointsToUser(ub.getUserId(), ub.getPoints());
+            }
+        }
+    }
+
+    public void FinalizeAllBets() {
+        for (Game g : mockGames) {
+            if (g.getTime().plusMinutes(90).isBefore(LocalDateTime.now())) {
+                Bet b = Bet.NONE;
+                if (g.getScoreT1() == g.getScoreT2())
+                    b = Bet.DRAW;
+                else if (g.getScoreT1() > g.getScoreT2())
+                    b = Bet.TEAM1;
+                else
+                    b = Bet.TEAM2;
+                FinalizeBets(g.getId(), b);
+            }
+        }
+    }
+
+    public void AddPointsToUser(int userId, int points) {
+        for (User u : mockUsers) {
+            if (u.getId() == userId) {
+                u.addScore(points);
+                break;
+            }
+        }
+    }
+
+    public ObservableList<Pair> GetAllPoints() {
+        ObservableList<Pair> highscore = FXCollections.observableArrayList();
+        for (User u : mockUsers) {
+            String s = u.getFirstName() + " " + u.getLastName() + ": " + u.getScore() + " Punkte";
+            highscore.add(new Pair(s, u.getScore()));
+        }
+        return highscore;
     }
 
     public Team getTeamById(int id) {

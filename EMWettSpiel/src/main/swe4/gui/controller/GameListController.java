@@ -8,15 +8,22 @@ import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import swe4.gui.Startup;
 import swe4.gui.data.Entities.Game;
+import swe4.gui.data.Entities.Pair;
 import swe4.gui.data.Repository;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Map;
 
 public class GameListController {
     public static Scene scene = null;
     public static Parent rootElement = null;
     public static ObservableList<Node> gameList = null;
+
+    public ListView list_Games;
+    public ListView<String> list_Highscore;
 
     public static void SetFxml(Parent node) {
         rootElement = node;
@@ -24,22 +31,43 @@ public class GameListController {
 
     public static void LoadScene() {
         if (scene == null) {
-            try {
-                var contr = new GameListController();
-                contr.LoadGameList(rootElement);
-            } catch (Exception ex) {
-                ex.printStackTrace();
-            }
-
             scene = new Scene(rootElement);
         }
+
         Startup.SetScene(scene);
     }
 
-    private void LoadGameList(Parent fxml) throws IOException {
-        var root = (AnchorPane) fxml;
-        var list = (ListView<Node>) root.getChildren().get(1);
+    @FXML
+    public void initialize() {
+        try {
+            InitGameList();
+            InitHighScoreList();
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+    }
 
+    private void InitHighScoreList() {
+        Repository.Instance.FinalizeAllBets();
+        var list = Repository.Instance.GetAllPoints();
+
+        list.sort(new Comparator<Pair>() {
+            @Override
+            public int compare(Pair o1, Pair o2) {
+                return Integer.compare(o1.getScore(), o2.getScore());
+            }
+        });
+        Collections.reverse(list);
+
+        ObservableList<String> textList = FXCollections.observableArrayList();
+        for (Pair p : list) {
+            textList.add(p.getText());
+        }
+
+        list_Highscore.setItems(textList);
+    }
+
+    private void InitGameList() throws IOException {
         if (gameList == null) {
             gameList = FXCollections.observableArrayList();
         }
@@ -56,8 +84,8 @@ public class GameListController {
             gameList.add(element);
         }
 
-        list.setItems(gameList);
-        list.scrollTo(earliestLiveGame);
+        list_Games.setItems(gameList);
+        list_Games.scrollTo(earliestLiveGame);
     }
 
     @FXML

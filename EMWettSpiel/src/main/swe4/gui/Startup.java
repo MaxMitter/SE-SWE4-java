@@ -62,14 +62,16 @@ public class Startup extends Application {
     private void LoadFxmlFiles() throws IOException {
         Parent loginFxml = FXMLLoader.load(getClass().getResource("fxml/login.fxml"));
         LoginController.SetFxml(loginFxml);
-        Parent gameListFxml = FXMLLoader.load(getClass().getResource("fxml/gameList.fxml"));
-        GameListController.SetFxml(gameListFxml);
-        Parent adminViewFxml = FXMLLoader.load(getClass().getResource("fxml/adminView.fxml"));
-        AdminViewController.SetFxml(adminViewFxml);
 
         gameListEntryUrl = getClass().getResource("fxml/gameListEntry.fxml");
         Parent gameListEntryFxml = FXMLLoader.load(gameListEntryUrl);
         GameListEntryController.SetFxml(gameListEntryFxml);
+
+        Parent gameListFxml = FXMLLoader.load(getClass().getResource("fxml/gameList.fxml"));
+        GameListController.SetFxml(gameListFxml);
+
+        Parent adminViewFxml = FXMLLoader.load(getClass().getResource("fxml/adminView.fxml"));
+        AdminViewController.SetFxml(adminViewFxml);
     }
 
     public static void SetScene (Scene newScene) {
