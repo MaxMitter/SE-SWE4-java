@@ -11,7 +11,6 @@ import java.util.Comparator;
 
 public class Repository {
 
-    public static Repository Instance = new Repository();
     private ArrayList<User> mockUsers = null;
     private ArrayList<Team> mockTeams = null;
     private ArrayList<Game> mockGames = null;
@@ -30,13 +29,13 @@ public class Repository {
 
     private static Repository instance = null;
 
-    public Repository Instance() { if (instance == null) { instance = new Repository(); } return instance; }
+    public static Repository Instance() { if (instance == null) { instance = new Repository(); } return instance; }
 
     private void InitMockTeams() {
-        mockTeams.add(new Team(0, "CBT"));
-        mockTeams.add(new Team(1, "DGP"));
-        mockTeams.add(new Team(2, "LOW"));
-        mockTeams.add(new Team(3, "BIP"));
+        mockTeams.add(new Team(0, "AUT"));
+        mockTeams.add(new Team(1, "GER"));
+        mockTeams.add(new Team(2, "ITA"));
+        mockTeams.add(new Team(3, "FRA"));
     }
 
     private void InitMockGames() {
@@ -49,9 +48,9 @@ public class Repository {
         mockGames.add(new Game(6, "Group Phase C", getTeamById(0), getTeamById(3), LocalDateTime.parse("2021-05-01T15:00:00")));
         mockGames.add(new Game(7, "Group Phase C", getTeamById(1), getTeamById(3), LocalDateTime.parse("2021-05-01T15:00:00")));
         mockGames.add(new Game(8, "Group Phase C", getTeamById(2), getTeamById(3), LocalDateTime.parse("2021-05-01T15:00:00")));
-        mockGames.add(new Game(8, "Group Phase D", getTeamById(1), getTeamById(3), LocalDateTime.parse("2021-07-01T15:00:00")));
-        mockGames.add(new Game(8, "Group Phase D", getTeamById(2), getTeamById(3), LocalDateTime.parse("2021-07-01T15:00:00")));
-        mockGames.add(new Game(8, "Group Phase D", getTeamById(0), getTeamById(3), LocalDateTime.parse("2021-07-01T15:00:00")));
+        mockGames.add(new Game(9, "Group Phase D", getTeamById(1), getTeamById(3), LocalDateTime.parse("2021-07-01T15:00:00")));
+        mockGames.add(new Game(10, "Group Phase D", getTeamById(2), getTeamById(3), LocalDateTime.parse("2021-07-01T15:00:00")));
+        mockGames.add(new Game(11, "Group Phase D", getTeamById(0), getTeamById(3), LocalDateTime.parse("2021-07-01T15:00:00")));
         mockGames.sort(new Comparator<Game>() {
             @Override
             public int compare(Game o1, Game o2) {

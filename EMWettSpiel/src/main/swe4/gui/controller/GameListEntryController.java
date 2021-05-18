@@ -74,7 +74,8 @@ public class GameListEntryController {
         var pointsLabel = (Label)gameInfo.getChildren().get(3);
         if (!isLive) {
             if (isOver) {
-                pointsLabel.setText("Punkte: " + Repository.Instance.GetBetPoints(Startup.GetCurrentUser(), g.getId()));
+                pointsLabel.setText("Punkte: " + Repository.Instance().GetBetPoints(Startup.GetCurrentUser(), g.getId()));
+
             } else {
                 pointsLabel.setText("");
             }
@@ -91,6 +92,12 @@ public class GameListEntryController {
             var t1Score = (Label)team1.getChildren().get(2);
             t1Score.setText(Integer.toString(g.getScoreT1()));
         }
+
+        if (isOver) {
+            var lblDraw = (Label)((HBox)box.getChildren().get(2)).getChildren().get(0);
+            lblDraw.setVisible(false);
+        }
+
         var team2 = (HBox) box.getChildren().get(3);
         // Team 2 Name label
         var t2Name = (Label)team2.getChildren().get(0);
@@ -109,7 +116,7 @@ public class GameListEntryController {
 
     private boolean canBetOnGame(int gameId) {
         boolean canBet = true;
-        var g = Repository.Instance.GetGameById(gameId);
+        var g = Repository.Instance().GetGameById(gameId);
         if (g.getTime().isAfter(LocalDateTime.now())) {
             return true;
         } else  {
@@ -164,6 +171,6 @@ public class GameListEntryController {
         if (lbl_team1.getStyle().contains("green")) b = Bet.TEAM1;
         if (lbl_team2.getStyle().contains("green")) b = Bet.TEAM2;
         if (lbl_draw.getStyle().contains("green"))  b = Bet.DRAW;
-        Repository.Instance.AddBet(Startup.GetCurrentUser(), Integer.parseInt(lbl_gameId.getText()), b);
+        Repository.Instance().AddBet(Startup.GetCurrentUser(), Integer.parseInt(lbl_gameId.getText()), b);
     }
 }

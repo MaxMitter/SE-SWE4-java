@@ -1,19 +1,10 @@
 package swe4.gui.controller;
 
-import javafx.application.Application;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.PasswordField;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.Border;
-import javafx.scene.layout.BorderStroke;
-import javafx.scene.paint.Paint;
-import javafx.stage.Stage;
 import swe4.gui.Exceptions.UserNotFoundException;
 import swe4.gui.Startup;
 import swe4.gui.data.Entities.Role;
@@ -49,21 +40,18 @@ public class LoginController {
         lbl_Error.setText("");
         if (btnLogin.isVisible()) {
             try {
-                int login = Repository.Instance.Login(txt_UserName.getText(), firstPassword.getText());
+                int login = Repository.Instance().Login(txt_UserName.getText(), firstPassword.getText());
                 if (login >= 0) {
-                    if (Repository.Instance.getRoleByUserName(txt_UserName.getText()) == Role.ADMIN)
+                    if (Repository.Instance().getRoleByUserName(txt_UserName.getText()) == Role.ADMIN)
                         AdminViewController.LoadScene();
                     else
                         GameListController.LoadScene();
 
                     Startup.Login(login);
-                } else {
-                    lbl_Error.setVisible(true);
-                    lbl_Error.setText("Invalid Password");
                 }
             } catch (UserNotFoundException ex) {
                 lbl_Error.setVisible(true);
-                lbl_Error.setText("User " + txt_UserName.getText() + " konnte nicht gefunden werden.");
+                lbl_Error.setText("User oder Passwort stimmen nicht überein");
             }
         }
     }

@@ -7,11 +7,11 @@ import javafx.fxml.FXML;
 import javafx.scene.*;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.*;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.util.Callback;
 import javafx.util.StringConverter;
 import javafx.util.converter.IntegerStringConverter;
+import javafx.util.converter.LocalDateTimeStringConverter;
 import swe4.gui.Startup;
 import swe4.gui.data.Entities.*;
 import swe4.gui.data.Repository;
@@ -77,6 +77,8 @@ public class AdminViewController {
     public TableColumn<Team, String> col_Teams_name;
 
     public TableColumn<User, Integer> col_Users_id;
+    public TableColumn<User, String> col_Users_fName;
+    public TableColumn<User, String> col_Users_lName;
     public TableColumn<User, String> col_Users_name;
     public TableColumn<User, String> col_Users_password;
     public TableColumn<User, Role> col_Users_role;
@@ -86,7 +88,10 @@ public class AdminViewController {
     }
 
     public static void LoadScene() {
-        Startup.SetScene(new Scene(rootElement));
+        if (scene == null)
+            scene = new Scene(rootElement);
+
+        Startup.SetScene(scene);
     }
 
     @FXML
@@ -123,12 +128,12 @@ public class AdminViewController {
         box_AddGame.setVisible(true);
         cbox_T1.setItems(list_Teams);
         cbox_T2.setItems(list_Teams);
-        cbox_UserRole.setItems(Repository.Instance.getAllRoles());
+        cbox_UserRole.setItems(Repository.Instance().getAllRoles());
     }
 
     private void initGames() {
         list_Games = FXCollections.observableArrayList();
-        list_Games.addAll(Repository.Instance.getAllGames());
+        list_Games.addAll(Repository.Instance().getAllGames());
 
         col_Games_id.setCellValueFactory(new PropertyValueFactory<>("id"));
 
@@ -146,6 +151,7 @@ public class AdminViewController {
         col_Games_t2.setCellValueFactory(new PropertyValueFactory<>("t2"));
         col_Games_t2.setCellFactory(ComboBoxTableCell.forTableColumn(new TeamStringConverter(), list_Teams));
         col_Games_time.setCellValueFactory(new PropertyValueFactory<>("time"));
+        col_Games_time.setCellFactory(TextFieldTableCell.forTableColumn(new LocalDateTimeStringConverter()));
         col_Games_scoreT1.setCellValueFactory(new PropertyValueFactory<>("scoreT1"));
         col_Games_scoreT1.setCellFactory(TextFieldTableCell.forTableColumn(new IntegerStringConverter()));
         col_Games_scoreT1.setOnEditCommit(event -> {
@@ -193,7 +199,7 @@ public class AdminViewController {
 
     private void initTeams() {
         list_Teams = FXCollections.observableArrayList();
-        list_Teams.addAll(Repository.Instance.getAllTeams());
+        list_Teams.addAll(Repository.Instance().getAllTeams());
 
         col_Teams_id.setCellValueFactory(new PropertyValueFactory<>("id"));
         col_Teams_name.setCellValueFactory(new PropertyValueFactory<>("name"));
@@ -203,9 +209,13 @@ public class AdminViewController {
 
     private void initUsers() {
         list_Users = FXCollections.observableArrayList();
-        list_Users.addAll(Repository.Instance.getAllUsers());
+        list_Users.addAll(Repository.Instance().getAllUsers());
 
         col_Users_id.setCellValueFactory(new PropertyValueFactory<>("id"));
+        col_Users_fName.setCellValueFactory(new PropertyValueFactory<>("firstName"));
+        col_Users_fName.setCellFactory(TextFieldTableCell.forTableColumn());
+        col_Users_lName.setCellValueFactory(new PropertyValueFactory<>("lastName"));
+        col_Users_lName.setCellFactory(TextFieldTableCell.forTableColumn());
         col_Users_name.setCellValueFactory(new PropertyValueFactory<>("userName"));
         col_Users_name.setCellFactory(TextFieldTableCell.forTableColumn());
         col_Users_password.setCellValueFactory(new PropertyValueFactory<>("password"));
@@ -293,7 +303,7 @@ public class AdminViewController {
 
     @FXML
     public void btnLogoutClick() {
-        Startup.SetScene(LoginController.scene);
         Startup.Logout();
+        LoginController.LoadScene();
     }
 }

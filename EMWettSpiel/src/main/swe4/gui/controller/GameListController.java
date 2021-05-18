@@ -28,7 +28,10 @@ public class GameListController {
     }
 
     public static void LoadScene() {
-        Startup.SetScene(new Scene(rootElement));
+        if (scene == null)
+            scene = new Scene(rootElement);
+
+        Startup.SetScene(scene);
     }
 
     @FXML
@@ -42,8 +45,8 @@ public class GameListController {
     }
 
     private void InitHighScoreList() {
-        Repository.Instance.FinalizeAllBets();
-        var list = Repository.Instance.GetAllPoints();
+        Repository.Instance().FinalizeAllBets();
+        var list = Repository.Instance().GetAllPoints();
 
         list.sort(new Comparator<Pair>() {
             @Override
@@ -66,7 +69,7 @@ public class GameListController {
             gameList = FXCollections.observableArrayList();
         }
 
-        var games = Repository.Instance.getAllGames();
+        var games = Repository.Instance().getAllGames();
 
         int earliestLiveGame = 0;
         for (Game g : games) {
