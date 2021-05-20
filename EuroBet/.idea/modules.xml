@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/EuroBet.iml" filepath="$PROJECT_DIR$/EuroBet.iml" />
+      <module fileurl="file://$PROJECT_DIR$/EuroBetClient/EuroBetClient.iml" filepath="$PROJECT_DIR$/EuroBetClient/EuroBetClient.iml" />
+      <module fileurl="file://$PROJECT_DIR$/EuroBetLib/EuroBetLib.iml" filepath="$PROJECT_DIR$/EuroBetLib/EuroBetLib.iml" />
+      <module fileurl="file://$PROJECT_DIR$/EuroBetServer/EuroBetServer.iml" filepath="$PROJECT_DIR$/EuroBetServer/EuroBetServer.iml" />
+    </modules>
+  </component>
+</project>
