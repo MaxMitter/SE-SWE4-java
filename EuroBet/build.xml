@@ -1,7 +1,7 @@
 <project name="EuroBet" default="compile" basedir=".">
 
     <property name="main.module" value="startup"/>
-    <property name="main.class" value="swe4.Startup"/>
+    <property name="main.class" value="main.swe4.Startup"/>
 
     <property environment="env"/>
     <property name="jar.name" value="${ant.project.name}.jar"/>

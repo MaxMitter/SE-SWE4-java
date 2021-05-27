@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/11.0.1"
+            xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.swe4.gui.controller.AdminViewController" stylesheets="@../css/style.css">
+    <TabPane fx:id="tabPane" layoutY="67.0" prefHeight="547.0" prefWidth="1300.0" tabClosingPolicy="UNAVAILABLE"
+             AnchorPane.bottomAnchor="106.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
+             AnchorPane.topAnchor="67.0">
+        <Tab text="Games">
+            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="242.0" prefWidth="600.0">
+                <TableView fx:id="tbl_Games" editable="true" layoutX="8.0" layoutY="7.0" prefHeight="518.0"
+                           prefWidth="1300.0" stylesheets="@../css/style.css"
+                           AnchorPane.bottomAnchor="0.0"
+                           AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                    <columns>
+                        <TableColumn fx:id="col_Games_id" text="ID"/>
+                        <TableColumn fx:id="col_Games_name" text="Bezeichnung"/>
+                        <TableColumn fx:id="col_Games_t1" text="Team 1"/>
+                        <TableColumn fx:id="col_Games_t2" prefWidth="77.0" text="Team 2"/>
+                        <TableColumn fx:id="col_Games_time" prefWidth="83.0" text="Spielzeit"/>
+                        <TableColumn fx:id="col_Games_scoreT1" text="Tore Team 1"/>
+                        <TableColumn fx:id="col_Games_scoreT2" text="Tore Team 2"/>
+                        <TableColumn fx:id="col_Games_delete" text="Löschen"/>
+                    </columns>
+                </TableView>
+            </AnchorPane>
+        </Tab>
+        <Tab text="Teams">
+            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                <TableView fx:id="tbl_Teams" editable="true" AnchorPane.bottomAnchor="-0.0"
+                           AnchorPane.leftAnchor="0.0" stylesheets="@../css/style.css"
+                           AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                    <columns>
+                        <TableColumn fx:id="col_Teams_id" text="ID"/>
+                        <TableColumn fx:id="col_Teams_name" text="Teamname"/>
+                    </columns>
+                </TableView>
+            </AnchorPane>
+        </Tab>
+        <Tab text="Users">
+            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                <TableView fx:id="tbl_Users" editable="true"
+                           stylesheets="@../css/style.css" AnchorPane.bottomAnchor="0.0"
+                           AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                    <columns>
+                        <TableColumn fx:id="col_Users_id" text="ID"/>
+                        <TableColumn fx:id="col_Users_fName" text="Vorname"/>
+                        <TableColumn fx:id="col_Users_lName" text="Nachname"/>
+                        <TableColumn fx:id="col_Users_name" text="Username"/>
+                        <TableColumn fx:id="col_Users_password" text="Password"/>
+                        <TableColumn fx:id="col_Users_role" text="Rolle"/>
+                    </columns>
+                </TableView>
+            </AnchorPane>
+        </Tab>
+    </TabPane>
+    <Label layoutX="14.0" layoutY="14.0" text="Admin Übersicht">
+        <font>
+            <Font size="36.0"/>
+        </font>
+    </Label>
+    <HBox fx:id="box_AddGame" layoutY="623.0" prefHeight="83.0" prefWidth="1280.0" AnchorPane.bottomAnchor="10.0"
+          AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+        <VBox alignment="CENTER_LEFT" prefHeight="200.0" prefWidth="100.0" HBox.hgrow="ALWAYS">
+            <TextField fx:id="txt_GameName" promptText="Bezeichnung">
+                <font>
+                    <Font size="16.0"/>
+                </font>
+                <VBox.margin>
+                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
+                </VBox.margin>
+            </TextField>
+            <TextField fx:id="txt_GameTime" layoutX="15.0" layoutY="33.0" promptText="Uhrzeit: yyyy-mm-ddThh:mm:ss">
+                <font>
+                    <Font size="16.0"/>
+                </font>
+                <VBox.margin>
+                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
+                </VBox.margin>
+            </TextField>
+        </VBox>
+        <VBox alignment="CENTER_LEFT" prefHeight="200.0" prefWidth="100.0" HBox.hgrow="ALWAYS">
+            <ComboBox fx:id="cbox_T1" prefHeight="25.0" prefWidth="429.0" style="-fx-font-size: 16;" promptText="Team 1"
+                      VBox.vgrow="ALWAYS">
+                <VBox.margin>
+                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
+                </VBox.margin>
+            </ComboBox>
+            <ComboBox fx:id="cbox_T2" prefHeight="25.0" prefWidth="490.0" style="-fx-font-size: 16;" promptText="Team 2"
+                      VBox.vgrow="ALWAYS">
+                <VBox.margin>
+                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
+                </VBox.margin>
+            </ComboBox>
+        </VBox>
+        <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" HBox.hgrow="ALWAYS">
+            <Button mnemonicParsing="false" onMouseClicked="#btnCreateGameClicked" prefHeight="62.0" prefWidth="426.0"
+                    text="Spiel hinzufügen">
+                <font>
+                    <Font size="16.0"/>
+                </font>
+            </Button>
+        </VBox>
+    </HBox>
+    <HBox fx:id="box_AddTeam" layoutX="10.0" layoutY="633.0" prefHeight="83.0" prefWidth="1280.0" visible="false"
+          AnchorPane.bottomAnchor="10.0">
+        <VBox alignment="CENTER_LEFT" prefHeight="200.0" prefWidth="100.0" HBox.hgrow="ALWAYS">
+            <TextField fx:id="txt_TeamName" promptText="Teamname">
+                <font>
+                    <Font size="16.0"/>
+                </font>
+                <VBox.margin>
+                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
+                </VBox.margin>
+            </TextField>
+        </VBox>
+        <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" HBox.hgrow="ALWAYS">
+            <Button mnemonicParsing="false" onMouseClicked="#btnCreateTeamClicked" prefHeight="62.0"
+                    prefWidth="426.0" text="Team hinzufügen">
+                <font>
+                    <Font size="16.0"/>
+                </font>
+            </Button>
+        </VBox>
+    </HBox>
+    <HBox fx:id="box_AddUser" layoutX="20.0" layoutY="643.0" prefHeight="83.0" prefWidth="1280.0" visible="false"
+          AnchorPane.bottomAnchor="10.0">
+        <VBox alignment="CENTER_LEFT" prefHeight="200.0" prefWidth="100.0" HBox.hgrow="ALWAYS">
+            <TextField fx:id="txt_UserName" promptText="Username" VBox.vgrow="ALWAYS">
+                <font>
+                    <Font size="16.0"/>
+                </font>
+                <VBox.margin>
+                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
+                </VBox.margin>
+            </TextField>
+            <PasswordField fx:id="txt_UserPassword" promptText="Password" VBox.vgrow="ALWAYS">
+                <font>
+                    <Font size="16.0"/>
+                </font>
+                <VBox.margin>
+                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
+                </VBox.margin>
+            </PasswordField>
+        </VBox>
+        <VBox prefHeight="200.0" prefWidth="100.0" HBox.hgrow="ALWAYS">
+            <TextField fx:id="txt_FirstName" promptText="Vorname">
+                <font>
+                    <Font size="16.0"/>
+                </font>
+                <VBox.margin>
+                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
+                </VBox.margin>
+            </TextField>
+            <TextField fx:id="txt_LastName" promptText="Nachname">
+                <VBox.margin>
+                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
+                </VBox.margin>
+                <font>
+                    <Font size="16.0"/>
+                </font>
+            </TextField>
+        </VBox>
+        <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" HBox.hgrow="ALWAYS">
+            <ComboBox fx:id="cbox_UserRole" prefHeight="25.0" prefWidth="427.0" promptText="User Rolle"
+                      VBox.vgrow="ALWAYS">
+                <VBox.margin>
+                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
+                </VBox.margin>
+            </ComboBox>
+            <Button mnemonicParsing="false" onMouseClicked="#btnCreateUserClicked" prefHeight="62.0"
+                    prefWidth="426.0" text="User hinzufügen">
+                <font>
+                    <Font size="16.0"/>
+                </font>
+            </Button>
+        </VBox>
+    </HBox>
+</AnchorPane>
