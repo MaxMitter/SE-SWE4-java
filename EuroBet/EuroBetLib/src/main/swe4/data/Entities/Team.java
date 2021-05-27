@@ -1,6 +1,8 @@
 package main.swe4.data.Entities;
 
-public class Team {
+import java.io.Serializable;
+
+public class Team implements Serializable {
 
     private int id;
     private String name;

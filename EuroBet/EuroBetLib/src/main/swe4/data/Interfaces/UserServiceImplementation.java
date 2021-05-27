@@ -1,22 +1,16 @@
 package main.swe4.data.Interfaces;
 
 import main.swe4.Exceptions.UserAlreadyExistsException;
-import main.swe4.data.Entities.Role;
 import main.swe4.data.Entities.User;
 import main.swe4.data.Repository;
 
 import java.rmi.RemoteException;
-import java.util.ArrayList;
 import java.util.Collection;
 
 public class UserServiceImplementation implements UserService {
     @Override
-    public void createUser(String firstName, String lastName, String userName, String password, Role role) throws RemoteException {
-        try {
-            Repository.Instance().CreateNewUser(firstName, lastName, userName, password);
-        } catch (UserAlreadyExistsException ex) {
-            throw new RemoteException("User already exists");
-        }
+    public void createUser(User user) throws RemoteException {
+        Repository.Instance().CreateUser(user);
     }
 
     @Override

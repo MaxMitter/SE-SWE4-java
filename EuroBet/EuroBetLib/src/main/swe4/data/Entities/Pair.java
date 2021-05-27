@@ -1,6 +1,8 @@
 package main.swe4.data.Entities;
 
-public class Pair {
+import java.io.Serializable;
+
+public class Pair implements Serializable {
     private final String text;
     private final Integer score;
 

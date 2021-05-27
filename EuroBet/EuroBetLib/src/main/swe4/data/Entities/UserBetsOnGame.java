@@ -2,10 +2,11 @@ package main.swe4.data.Entities;
 
 import main.swe4.data.Repository;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 
-public class UserBetsOnGame {
+public class UserBetsOnGame implements Serializable {
     private final int gameId;
     private final int userId;
     private Bet bet;

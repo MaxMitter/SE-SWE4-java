@@ -1,6 +1,8 @@
 package main.swe4.data.Entities;
 
-public enum Bet {
+import java.io.Serializable;
+
+public enum Bet implements Serializable {
     TEAM1,
     TEAM2,
     DRAW,

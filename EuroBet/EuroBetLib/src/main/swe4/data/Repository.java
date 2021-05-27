@@ -7,6 +7,7 @@ import main.swe4.data.Entities.*;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Comparator;
 
 public class Repository {
@@ -15,6 +16,7 @@ public class Repository {
     private ArrayList<Team> mockTeams = null;
     private ArrayList<Game> mockGames = null;
     private ArrayList<UserBetsOnGame> mockBets = null;
+    private static int nextId = 0;
 
     private Repository() {
         mockUsers = new ArrayList<>();
@@ -66,10 +68,9 @@ public class Repository {
     }
 
     private void InitMockUsers() {
-        mockUsers.add(new User(0, "", "", "", "", Role.USER));
-        mockUsers.add(new User(1, "Admin", "Main", "admin", "admin", Role.ADMIN));
-        mockUsers.add(new User(2, "Test1", "test"));
-        mockUsers.add(new User(3, "Test2", "test"));
+        mockUsers.add(new User(nextId++, "", "", "", ""));
+        mockUsers.add(new User(nextId++, "Max", "Mustermann", "Test1", "test"));
+        mockUsers.add(new User(nextId++, "Maria", "Musterfrau", "Test2", "test"));
     }
 
     private void InitBets() {
@@ -182,14 +183,6 @@ public class Repository {
         throw new UserNotFoundException();
     }
 
-    public Role getRoleByUserName(String userName) {
-        for (User u : mockUsers) {
-            if (u.getUserName().equals(userName))
-                return u.getRole();
-        }
-        return null;
-    }
-
     public void CreateNewUser(String firstName, String lastName, String name, String pw) throws UserAlreadyExistsException {
         for (User user : mockUsers) {
             if (user.getUserName().equals(name)) {
@@ -197,7 +190,7 @@ public class Repository {
             }
         }
 
-        mockUsers.add(new User(name, pw));
+        mockUsers.add(new User(nextId++, firstName, lastName, name, pw));
     }
 
     public ArrayList<Game> getAllGames() {
@@ -218,13 +211,6 @@ public class Repository {
 
     public ArrayList<User> GetAllUsers() {
         return mockUsers;
-    }
-
-    public ObservableList<Role> GetAllRoles() {
-        ObservableList<Role> list = FXCollections.observableArrayList();
-        list.add(Role.USER);
-        list.add(Role.ADMIN);
-        return list;
     }
 
     public ArrayList<UserBetsOnGame> GetAllBets() {
@@ -252,6 +238,10 @@ public class Repository {
 
     public void DeleteGame(Game game) {
         mockGames.remove(game);
+    }
+
+    public void CreateUser(User user) {
+        mockUsers.add(user);
     }
 
     public void UpdateUser(User user) {

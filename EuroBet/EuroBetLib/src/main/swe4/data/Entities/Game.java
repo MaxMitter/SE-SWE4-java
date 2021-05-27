@@ -1,9 +1,10 @@
 package main.swe4.data.Entities;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 
-public class Game {
+public class Game implements Serializable {
 
     private int id;
     private String name;

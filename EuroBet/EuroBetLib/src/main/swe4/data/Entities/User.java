@@ -1,30 +1,22 @@
 package main.swe4.data.Entities;
 
-public class User {
+import java.io.Serializable;
+
+public class User implements Serializable {
 
     private final int id;
     private String firstName;
     private String lastName;
     private String userName;
     private String password;
-    private Role role;
     private int score;
 
-    public User(String name, String password) {
-        this(0, name, password);
-    }
-
-    public User(int id, String name, String password) {
-        this(id, "Max", "Mustermann", name, password, Role.USER);
-    }
-
-    public User(int id, String fname, String lname, String uname, String password, Role r) {
+    public User(int id, String fname, String lname, String uname, String password) {
         this.id = id;
         firstName = fname;
         lastName = lname;
         userName = uname;
         this.password = password;
-        role = r;
         score = 0;
     }
 
@@ -34,10 +26,6 @@ public class User {
 
     public String getUserName() {
         return userName;
-    }
-
-    public Role getRole() {
-        return role;
     }
 
     public String getPassword() {
@@ -79,10 +67,6 @@ public class User {
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
-    }
-
-    public void setRole(Role role) {
-        this.role = role;
     }
 
     public void setScore(int score) {

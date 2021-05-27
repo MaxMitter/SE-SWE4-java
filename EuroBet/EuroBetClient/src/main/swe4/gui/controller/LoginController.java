@@ -7,7 +7,6 @@ import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import main.swe4.Exceptions.UserNotFoundException;
 import main.swe4.Startup;
-import main.swe4.data.Entities.Role;
 import main.swe4.data.Repository;
 
 import java.io.IOException;

@@ -3,19 +3,19 @@ package main.swe4.gui.controller;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.*;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.*;
 import javafx.scene.layout.HBox;
-import javafx.util.Callback;
-import javafx.util.StringConverter;
-import javafx.util.converter.IntegerStringConverter;
-import javafx.util.converter.LocalDateTimeStringConverter;
+import javafx.util.*;
+import javafx.util.converter.*;
 import main.swe4.Startup;
-import main.swe4.data.Repository;
 import main.swe4.data.Entities.*;
+import main.swe4.gui.services.ServiceController;
 
+import java.rmi.RemoteException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeParseException;
 
@@ -54,7 +54,6 @@ public class AdminViewController {
     public TextField txt_FirstName;
     public TextField txt_LastName;
     public PasswordField txt_UserPassword;
-    public ComboBox<Role> cbox_UserRole;
 
     public TableView<Team> tbl_Teams;
     public TableView<Game> tbl_Games;
@@ -81,7 +80,6 @@ public class AdminViewController {
     public TableColumn<User, String> col_Users_lName;
     public TableColumn<User, String> col_Users_name;
     public TableColumn<User, String> col_Users_password;
-    public TableColumn<User, Role> col_Users_role;
 
     public static void SetFxml(Parent node) {
         rootElement = node;
@@ -128,12 +126,15 @@ public class AdminViewController {
         box_AddGame.setVisible(true);
         cbox_T1.setItems(list_Teams);
         cbox_T2.setItems(list_Teams);
-        cbox_UserRole.setItems(Repository.Instance().GetAllRoles());
     }
 
     private void initGames() {
         list_Games = FXCollections.observableArrayList();
-        list_Games.addAll(Repository.Instance().getAllGames());
+        try {
+            list_Games.addAll(ServiceController.gameServiceInstance().getAllGames());
+        } catch (RemoteException ex) {
+            ex.printStackTrace();
+        }
 
         col_Games_id.setCellValueFactory(new PropertyValueFactory<>("id"));
 
@@ -141,31 +142,59 @@ public class AdminViewController {
         col_Games_name.setCellFactory(TextFieldTableCell.forTableColumn());
         col_Games_name.setOnEditCommit(event -> {
             final var value = event.getNewValue().isEmpty() ? event.getOldValue() : event.getNewValue();
-            var x = (Game) event.getTableView().getItems().get(event.getTablePosition().getRow());
-            x.setName(value);
+            var g = (Game) event.getTableView().getItems().get(event.getTablePosition().getRow());
+            g.setName(value);
+            updateGame(g);
             tbl_Games.refresh();
         });
 
         col_Games_t1.setCellValueFactory(new PropertyValueFactory<>("t1"));
         col_Games_t1.setCellFactory(ComboBoxTableCell.forTableColumn(new TeamStringConverter(), list_Teams));
+        col_Games_t1.setOnEditCommit(event -> {
+            final var value = event.getNewValue() == null ? event.getOldValue() : event.getNewValue();
+            var g = (Game) event.getTableView().getItems().get(event.getTablePosition().getRow());
+            g.setT1(value);
+            updateGame(g);
+            tbl_Games.refresh();
+        });
+
         col_Games_t2.setCellValueFactory(new PropertyValueFactory<>("t2"));
         col_Games_t2.setCellFactory(ComboBoxTableCell.forTableColumn(new TeamStringConverter(), list_Teams));
+        col_Games_t2.setOnEditCommit(event -> {
+            final var value = event.getNewValue() == null ? event.getOldValue() : event.getNewValue();
+            var g = (Game) event.getTableView().getItems().get(event.getTablePosition().getRow());
+            g.setT2(value);
+            updateGame(g);
+            tbl_Games.refresh();
+        });
+
         col_Games_time.setCellValueFactory(new PropertyValueFactory<>("time"));
         col_Games_time.setCellFactory(TextFieldTableCell.forTableColumn(new LocalDateTimeStringConverter()));
+        col_Games_time.setOnEditCommit(event -> {
+            final var value = event.getNewValue() == null ? event.getOldValue() : event.getNewValue();
+            var g = (Game) event.getTableView().getItems().get(event.getTablePosition().getRow());
+            g.setTime(value);
+            updateGame(g);
+            tbl_Games.refresh();
+        });
+
         col_Games_scoreT1.setCellValueFactory(new PropertyValueFactory<>("scoreT1"));
         col_Games_scoreT1.setCellFactory(TextFieldTableCell.forTableColumn(new IntegerStringConverter()));
         col_Games_scoreT1.setOnEditCommit(event -> {
             final var value = event.getNewValue() == null ? event.getOldValue() : event.getNewValue();
-            var x = (Game) event.getTableView().getItems().get(event.getTablePosition().getRow());
-            x.setScoreT1(value);
+            var g = (Game) event.getTableView().getItems().get(event.getTablePosition().getRow());
+            g.setScoreT1(value);
+            updateGame(g);
             tbl_Games.refresh();
         });
+
         col_Games_scoreT2.setCellValueFactory(new PropertyValueFactory<>("scoreT2"));
         col_Games_scoreT2.setCellFactory(TextFieldTableCell.forTableColumn(new IntegerStringConverter()));
         col_Games_scoreT2.setOnEditCommit(event -> {
             final var value = event.getNewValue() == null ? event.getOldValue() : event.getNewValue();
-            var x = (Game) event.getTableView().getItems().get(event.getTablePosition().getRow());
-            x.setScoreT2(value);
+            var g = (Game) event.getTableView().getItems().get(event.getTablePosition().getRow());
+            g.setScoreT2(value);
+            updateGame(g);
             tbl_Games.refresh();
         });
 
@@ -178,6 +207,7 @@ public class AdminViewController {
                     {
                         btn.setOnAction((ActionEvent event) -> {
                             Game g = getTableView().getItems().get(getIndex());
+                            deleteGame(g);
                             list_Games.remove(g);
                         });
                     }
@@ -198,9 +228,29 @@ public class AdminViewController {
         tbl_Games.setItems(list_Games);
     }
 
+    private void deleteGame(Game g) {
+        try {
+            ServiceController.gameServiceInstance().deleteGame(g);
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void updateGame(Game g) {
+        try {
+            ServiceController.gameServiceInstance().updateGame(g);
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
+    }
+
     private void initTeams() {
         list_Teams = FXCollections.observableArrayList();
-        list_Teams.addAll(Repository.Instance().GetAllTeams());
+        try {
+            list_Teams.addAll(ServiceController.teamServiceInstance().getAllTeams());
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
 
         col_Teams_id.setCellValueFactory(new PropertyValueFactory<>("id"));
         col_Teams_name.setCellValueFactory(new PropertyValueFactory<>("name"));
@@ -210,18 +260,17 @@ public class AdminViewController {
 
     private void initUsers() {
         list_Users = FXCollections.observableArrayList();
-        list_Users.addAll(Repository.Instance().GetAllUsers());
+        try {
+            list_Users.addAll(ServiceController.userServiceInstance().getAllUsers());
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
 
         col_Users_id.setCellValueFactory(new PropertyValueFactory<>("id"));
         col_Users_fName.setCellValueFactory(new PropertyValueFactory<>("firstName"));
-        col_Users_fName.setCellFactory(TextFieldTableCell.forTableColumn());
         col_Users_lName.setCellValueFactory(new PropertyValueFactory<>("lastName"));
-        col_Users_lName.setCellFactory(TextFieldTableCell.forTableColumn());
         col_Users_name.setCellValueFactory(new PropertyValueFactory<>("userName"));
-        col_Users_name.setCellFactory(TextFieldTableCell.forTableColumn());
         col_Users_password.setCellValueFactory(new PropertyValueFactory<>("password"));
-        col_Users_role.setCellValueFactory(new PropertyValueFactory<>("role"));
-        col_Users_role.setCellFactory(ComboBoxTableCell.forTableColumn(Role.ADMIN, Role.USER));
 
         tbl_Users.setItems(list_Users);
     }
@@ -253,21 +302,15 @@ public class AdminViewController {
         }
 
         if (isValid) {
-            // TODO add to repository
             try {
-                list_Games.add(new Game(1, txt_GameName.getText(), cbox_T1.getValue(), cbox_T2.getValue(), LocalDateTime.parse(txt_GameTime.getText())));
-            } catch (DateTimeParseException ex) {
+                var g = new Game(1, txt_GameName.getText(), cbox_T1.getValue(), cbox_T2.getValue(), LocalDateTime.parse(txt_GameTime.getText()));
+                ServiceController.gameServiceInstance().createGame(g);
+                list_Games.add(g);
+            } catch (DateTimeParseException e) {
                 txt_GameTime.setStyle("-fx-border-color: red;");
+            } catch (RemoteException ex) {
+                ex.printStackTrace();
             }
-        }
-    }
-
-    @FXML
-    public void btnCreateTeamClicked() {
-        if (txt_TeamName.getText().isEmpty()) {
-            txt_TeamName.setStyle("-fx-border-color: red;");
-        } else {
-            list_Teams.add(new Team(1, txt_TeamName.getText()));
         }
     }
 
@@ -275,7 +318,6 @@ public class AdminViewController {
     public void btnCreateUserClicked() {
         txt_UserName.setStyle("-fx-border-color: none;");
         txt_UserPassword.setStyle("-fx-border-color: none;");
-        cbox_UserRole.setStyle("-fx-border-color: none;");
         txt_FirstName.setStyle("-fx-border-color: none;");
         txt_LastName.setStyle("-fx-border-color: none;");
 
@@ -289,10 +331,6 @@ public class AdminViewController {
             txt_UserPassword.setStyle("-fx-border-color: red;");
             isValid = false;
         }
-        if (cbox_UserRole.getValue() == null) {
-            cbox_UserRole.setStyle("-fx-border-color: red;");
-            isValid = false;
-        }
         if (txt_FirstName.getText().isEmpty()) {
             txt_FirstName.setStyle("-fx-border-color: red;");
             isValid = false;
@@ -303,7 +341,14 @@ public class AdminViewController {
         }
 
         if (isValid) {
-            list_Users.add(new User(1, txt_FirstName.getText(), txt_LastName.getText(), txt_UserName.getText(), txt_UserPassword.getText(), cbox_UserRole.getValue()));
+            var u = new User(1, txt_FirstName.getText(), txt_LastName.getText(), txt_UserName.getText(), txt_UserPassword.getText());
+            list_Users.add(u);
+
+            try {
+                ServiceController.userServiceInstance().createUser(u);
+            } catch (RemoteException e) {
+                e.printStackTrace();
+            }
         }
     }
 }
