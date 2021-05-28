@@ -8,17 +8,17 @@ import javafx.scene.input.MouseEvent;
 import main.swe4.Exceptions.UserNotFoundException;
 import main.swe4.Startup;
 import main.swe4.data.Repository;
+import main.swe4.gui.services.ServiceController;
 
 import java.io.IOException;
+import java.rmi.RemoteException;
 
 public class LoginController {
 
     public static Scene scene = null;
     public static Parent rootElement = null;
     public Button btnLogin;
-    public Button btnBack;
-    public PasswordField firstPassword;
-    public PasswordField secondPassword;
+    public PasswordField password;
     public TextField txt_UserName;
     public Label lbl_Error;
 
@@ -39,47 +39,20 @@ public class LoginController {
         lbl_Error.setText("");
         if (btnLogin.isVisible()) {
             try {
-                int login = Repository.Instance().Login(txt_UserName.getText(), firstPassword.getText());
-                if (login >= 0) {
-                    if (Repository.Instance().getRoleByUserName(txt_UserName.getText()) == Role.ADMIN)
-                        AdminViewController.LoadScene();
-                    else
-                        GameListController.LoadScene();
-
+                var login = ServiceController.userServiceInstance().login(txt_UserName.getText(), password.getText());
+                if (login != null) {
                     Startup.Login(login);
+                    Startup.LoadGameListEntryFxml();
+                    Startup.LoadGameListFxml();
+
+                    GameListController.LoadScene();
+                } else {
+                    lbl_Error.setVisible(true);
+                    lbl_Error.setText("User oder Passwort stimmen nicht überein");
                 }
-            } catch (UserNotFoundException ex) {
-                lbl_Error.setVisible(true);
-                lbl_Error.setText("User oder Passwort stimmen nicht überein");
+            } catch (RemoteException ex) {
+                ex.printStackTrace();
             }
-        }
-    }
-
-    @FXML
-    protected void btnRegisterClick(MouseEvent event) {
-        lbl_Error.setText("");
-        if (btnLogin.isVisible()) {
-            btnLogin.setVisible(false);
-            btnBack.setVisible(true);
-            secondPassword.setVisible(true);
-            secondPassword.setStyle("-fx-border-width: 0px; -fx-border-color: black;");
-        } else {
-            if (!firstPassword.getText().isEmpty() && firstPassword.getText().equals(secondPassword.getText())) {
-                GameListController.LoadScene();
-            } else {
-                secondPassword.setStyle("-fx-border-color: red; -fx-border-width: 2px;");
-                lbl_Error.setText("Passwörter müssen ident sein.");
-            }
-        }
-    }
-
-    @FXML
-    public void btnBackClick(MouseEvent mouseEvent) {
-        if (!btnLogin.isVisible()) {
-            btnLogin.setVisible(true);
-            btnBack.setVisible(false);
-            secondPassword.setVisible(false);
-            lbl_Error.setText("");
         }
     }
 }

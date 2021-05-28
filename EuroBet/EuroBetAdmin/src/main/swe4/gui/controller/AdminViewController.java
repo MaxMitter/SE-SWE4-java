@@ -40,15 +40,12 @@ public class AdminViewController {
     public TabPane tabPane;
 
     public HBox box_AddGame;
-    public HBox box_AddTeam;
     public HBox box_AddUser;
 
     public TextField txt_GameName;
     public TextField txt_GameTime;
     public ComboBox<Team> cbox_T1;
     public ComboBox<Team> cbox_T2;
-
-    public TextField txt_TeamName;
 
     public TextField txt_UserName;
     public TextField txt_FirstName;
@@ -103,9 +100,6 @@ public class AdminViewController {
                 case "Games":
                     box_AddGame.setVisible(false);
                     break;
-                case "Teams":
-                    box_AddTeam.setVisible(false);
-                    break;
                 case "Users":
                     box_AddUser.setVisible(false);
                     break;
@@ -114,9 +108,6 @@ public class AdminViewController {
             switch (t1.getText()) {
                 case "Games":
                     box_AddGame.setVisible(true);
-                    break;
-                case "Teams":
-                    box_AddTeam.setVisible(true);
                     break;
                 case "Users":
                     box_AddUser.setVisible(true);
@@ -238,6 +229,7 @@ public class AdminViewController {
 
     private void updateGame(Game g) {
         try {
+            System.out.println("Sending update notice.");
             ServiceController.gameServiceInstance().updateGame(g);
         } catch (RemoteException e) {
             e.printStackTrace();

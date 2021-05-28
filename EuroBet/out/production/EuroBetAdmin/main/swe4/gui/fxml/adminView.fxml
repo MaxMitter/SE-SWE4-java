@@ -105,27 +105,6 @@
             </Button>
         </VBox>
     </HBox>
-    <HBox fx:id="box_AddTeam" layoutX="10.0" layoutY="633.0" prefHeight="83.0" prefWidth="1280.0" visible="false"
-          AnchorPane.bottomAnchor="10.0">
-        <VBox alignment="CENTER_LEFT" prefHeight="200.0" prefWidth="100.0" HBox.hgrow="ALWAYS">
-            <TextField fx:id="txt_TeamName" promptText="Teamname">
-                <font>
-                    <Font size="16.0"/>
-                </font>
-                <VBox.margin>
-                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
-                </VBox.margin>
-            </TextField>
-        </VBox>
-        <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" HBox.hgrow="ALWAYS">
-            <Button mnemonicParsing="false" onMouseClicked="#btnCreateTeamClicked" prefHeight="62.0"
-                    prefWidth="426.0" text="Team hinzufügen">
-                <font>
-                    <Font size="16.0"/>
-                </font>
-            </Button>
-        </VBox>
-    </HBox>
     <HBox fx:id="box_AddUser" layoutX="20.0" layoutY="643.0" prefHeight="83.0" prefWidth="1280.0" visible="false"
           AnchorPane.bottomAnchor="10.0">
         <VBox alignment="CENTER_LEFT" prefHeight="200.0" prefWidth="100.0" HBox.hgrow="ALWAYS">

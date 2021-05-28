@@ -7,7 +7,7 @@
 <?import javafx.scene.text.*?>
 
 <AnchorPane prefHeight="138.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="swe4.gui.controller.GameListEntryController">
+            fx:controller="main.swe4.gui.controller.GameListEntryController">
     <VBox prefHeight="144.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
         <HBox prefHeight="47.0">
             <Label fx:id="lbl_gameTime" prefHeight="33.0" text="15:00">

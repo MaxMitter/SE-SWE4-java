@@ -44,7 +44,7 @@ public class UserServiceImplementation implements UserService {
     }
 
     @Override
-    public User getUserByUsernameAndPassword(String userName, String password) throws RemoteException {
+    public User login(String userName, String password) throws RemoteException {
         for (var u : Repository.Instance().GetAllUsers()) {
             if (u.isValidLogin(userName, password)) {
                 return u;

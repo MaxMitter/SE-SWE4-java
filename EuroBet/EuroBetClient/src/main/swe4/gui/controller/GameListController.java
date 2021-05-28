@@ -8,17 +8,22 @@ import javafx.scene.control.*;
 import main.swe4.Startup;
 import main.swe4.data.Entities.Game;
 import main.swe4.data.Entities.Pair;
-import main.swe4.data.Repository;
+import main.swe4.data.Interfaces.Callback;
+import main.swe4.gui.services.CallbackImplementation;
+import main.swe4.gui.services.ServiceController;
 
 import java.io.IOException;
+import java.rmi.RemoteException;
+import java.rmi.server.UnicastRemoteObject;
 import java.time.LocalDateTime;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 
 public class GameListController {
     public static Scene scene = null;
     public static Parent rootElement = null;
-    public static ObservableList<Node> gameList = null;
+    public static ObservableList<Parent> gameList = null;
 
     public ListView list_Games;
     public ListView<String> list_Highscore;
@@ -37,6 +42,9 @@ public class GameListController {
     @FXML
     public void initialize() {
         try {
+            Callback callback = new CallbackImplementation(this);
+            UnicastRemoteObject.exportObject(callback, 0);
+            ServiceController.registerCallback(callback);
             InitGameList();
             InitHighScoreList();
         } catch (IOException ex) {
@@ -45,8 +53,20 @@ public class GameListController {
     }
 
     private void InitHighScoreList() {
-        Repository.Instance().FinalizeAllBets();
-        var list = Repository.Instance().GetAllPoints();
+        try {
+            ServiceController.bettingServiceInstance().finalizeScores();
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
+
+        Collection<Pair> l = null;
+        try {
+            l = ServiceController.bettingServiceInstance().getAllScores();
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
+
+        var list = FXCollections.observableArrayList(l);
 
         list.sort(new Comparator<Pair>() {
             @Override
@@ -69,7 +89,7 @@ public class GameListController {
             gameList = FXCollections.observableArrayList();
         }
 
-        var games = Repository.Instance().getAllGames();
+        var games = ServiceController.gameServiceInstance().getAllGames();
 
         int earliestLiveGame = 0;
         for (Game g : games) {
@@ -89,5 +109,34 @@ public class GameListController {
     public void btnLogoutClick() {
         Startup.Logout();
         Startup.SetScene(LoginController.scene);
+    }
+
+    public void RemoveGame(Game g) {
+        gameList.removeIf(p -> g.getId() == GameListEntryController.GetGameId(p));
+    }
+
+    public void UpdateGame(Game g) throws RemoteException {
+        System.out.println("Updating game...");
+        int current = 0;
+        var currElement = gameList.get(current);
+
+        while (currElement != null && g.getId() != GameListEntryController.GetGameId(currElement)) {
+            current++;
+            currElement = gameList.get(current);
+        }
+
+        if (currElement != null) {
+            System.out.println("Found game!");
+            try {
+                gameList.set(current, GameListEntryController.GetElement(g));
+                System.out.println("Updated game!");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            list_Games.refresh();
+        } else {
+            System.out.println("Game not found in list.");
+        }
     }
 }

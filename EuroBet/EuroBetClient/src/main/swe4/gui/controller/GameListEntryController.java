@@ -2,8 +2,7 @@ package main.swe4.gui.controller;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
+import javafx.scene.*;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
@@ -11,14 +10,14 @@ import javafx.scene.shape.Circle;
 import main.swe4.Startup;
 import main.swe4.data.Entities.Bet;
 import main.swe4.data.Entities.Game;
-import main.swe4.data.Repository;
+import main.swe4.gui.services.ServiceController;
 
 import java.io.*;
+import java.rmi.RemoteException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 public class GameListEntryController {
-    public static Scene scene = null;
     public static Parent rootElement = null;
 
     //FXML Properties
@@ -72,8 +71,7 @@ public class GameListEntryController {
         var pointsLabel = (Label) gameInfo.getChildren().get(3);
         if (!isLive) {
             if (isOver) {
-                pointsLabel.setText("Punkte: " + Repository.Instance().GetBetPoints(Startup.GetCurrentUser(), g.getId()));
-
+                pointsLabel.setText("Punkte: " + ServiceController.bettingServiceInstance().getBetPoints(Startup.GetCurrentUser().getId(), g.getId()));
             } else {
                 pointsLabel.setText("");
             }
@@ -112,9 +110,23 @@ public class GameListEntryController {
         return newElem;
     }
 
+    public static int GetGameId (Parent gameListEntry) {
+        var lbl = (Label) gameListEntry.getChildrenUnmodifiable().get(1);
+        return Integer.parseInt(lbl.getText());
+    }
+
     private boolean canBetOnGame(int gameId) {
-        boolean canBet = true;
-        var g = Repository.Instance().GetGameById(gameId);
+        Game g = null;
+
+        try {
+            g = ServiceController.gameServiceInstance().getGameById(gameId);
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
+
+        if (g == null)
+            return false;
+
         if (g.getTime().isAfter(LocalDateTime.now())) {
             return true;
         } else {
@@ -169,6 +181,10 @@ public class GameListEntryController {
         if (lbl_team1.getStyle().contains("green")) b = Bet.TEAM1;
         if (lbl_team2.getStyle().contains("green")) b = Bet.TEAM2;
         if (lbl_draw.getStyle().contains("green")) b = Bet.DRAW;
-        Repository.Instance().AddBet(Startup.GetCurrentUser(), Integer.parseInt(lbl_gameId.getText()), b);
+        try {
+            ServiceController.bettingServiceInstance().addBet(Startup.GetCurrentUser().getId(), Integer.parseInt(lbl_gameId.getText()), b);
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
     }
 }

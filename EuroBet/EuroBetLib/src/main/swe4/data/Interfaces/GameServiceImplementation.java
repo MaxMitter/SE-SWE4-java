@@ -1,5 +1,6 @@
 package main.swe4.data.Interfaces;
 
+import main.swe4.Server;
 import main.swe4.data.Entities.Game;
 import main.swe4.data.Entities.Team;
 import main.swe4.data.Repository;
@@ -16,12 +17,15 @@ public class GameServiceImplementation implements GameService {
 
     @Override
     public void updateGame(Game game) throws RemoteException {
+        System.out.println("Server got update notice.");
         Repository.Instance().UpdateGame(game);
+        Server.GetInstance().updateGame(game);
     }
 
     @Override
     public void deleteGame(Game game) throws RemoteException {
         Repository.Instance().DeleteGame(game);
+        Server.GetInstance().deleteGame(game);
     }
 
     @Override

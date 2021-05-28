@@ -10,8 +10,6 @@ import main.swe4.gui.controller.AdminViewController;
 import java.io.IOException;
 import java.net.URL;
 
-import static javafx.application.Application.launch;
-
 public class Startup extends Application {
 
     public static void main(String[] args) {

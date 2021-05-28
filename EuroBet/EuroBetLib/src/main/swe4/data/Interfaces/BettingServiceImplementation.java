@@ -1,7 +1,7 @@
 package main.swe4.data.Interfaces;
 
 import main.swe4.data.Entities.Bet;
-import main.swe4.data.Entities.User;
+import main.swe4.data.Entities.Pair;
 import main.swe4.data.Entities.UserBetsOnGame;
 import main.swe4.data.Repository;
 
@@ -72,5 +72,20 @@ public class BettingServiceImplementation implements BettingService {
     @Override
     public void deleteBet(UserBetsOnGame bet) throws RemoteException {
         Repository.Instance().DeleteBet(bet);
+    }
+
+    @Override
+    public int getBetPoints(int userId, int gameId) throws RemoteException {
+        return Repository.Instance().GetBetPoints(userId, gameId);
+    }
+
+    @Override
+    public void finalizeScores() throws RemoteException {
+        Repository.Instance().FinalizeAllBets();
+    }
+
+    @Override
+    public Collection<Pair> getAllScores() throws RemoteException {
+        return Repository.Instance().GetAllPoints();
     }
 }

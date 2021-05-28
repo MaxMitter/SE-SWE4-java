@@ -146,8 +146,8 @@ public class Repository {
         }
     }
 
-    public ObservableList<Pair> GetAllPoints() {
-        ObservableList<Pair> highscore = FXCollections.observableArrayList();
+    public Collection<Pair> GetAllPoints() {
+        ArrayList<Pair> highscore = new ArrayList<>();
         for (User u : mockUsers) {
             String s = u.getFirstName() + " " + u.getLastName() + ": " + u.getScore() + " Punkte";
             highscore.add(new Pair(s, u.getScore()));
