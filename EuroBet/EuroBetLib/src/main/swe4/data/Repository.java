@@ -1,7 +1,5 @@
 package main.swe4.data;
 
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import main.swe4.Exceptions.*;
 import main.swe4.data.Entities.*;
 
@@ -52,9 +50,9 @@ public class Repository {
         mockGames.add(new Game(3, "Group Phase B", GetTeamById(1), GetTeamById(2), LocalDateTime.now()));
         mockGames.add(new Game(4, "Group Phase B", GetTeamById(1), GetTeamById(3), LocalDateTime.now()));
         mockGames.add(new Game(5, "Group Phase B", GetTeamById(2), GetTeamById(3), LocalDateTime.now()));
-        mockGames.add(new Game(6, "Group Phase C", GetTeamById(0), GetTeamById(3), LocalDateTime.parse("2021-05-01T15:00:00")));
-        mockGames.add(new Game(7, "Group Phase C", GetTeamById(1), GetTeamById(3), LocalDateTime.parse("2021-05-01T15:00:00")));
-        mockGames.add(new Game(8, "Group Phase C", GetTeamById(2), GetTeamById(3), LocalDateTime.parse("2021-05-01T15:00:00")));
+        mockGames.add(new Game(6, "Group Phase C", GetTeamById(0), GetTeamById(3), LocalDateTime.parse("2021-05-01T15:00:00"), 1, 0));
+        mockGames.add(new Game(7, "Group Phase C", GetTeamById(1), GetTeamById(3), LocalDateTime.parse("2021-05-01T15:00:00"), 1, 0));
+        mockGames.add(new Game(8, "Group Phase C", GetTeamById(2), GetTeamById(3), LocalDateTime.parse("2021-05-01T15:00:00"), 1, 0));
         mockGames.add(new Game(9, "Group Phase D", GetTeamById(1), GetTeamById(3), LocalDateTime.parse("2021-07-01T15:00:00")));
         mockGames.add(new Game(10, "Group Phase D", GetTeamById(2), GetTeamById(3), LocalDateTime.parse("2021-07-01T15:00:00")));
         mockGames.add(new Game(11, "Group Phase D", GetTeamById(0), GetTeamById(3), LocalDateTime.parse("2021-07-01T15:00:00")));
@@ -74,12 +72,11 @@ public class Repository {
     }
 
     private void InitBets() {
-        mockBets.add(new UserBetsOnGame(6, 0, Bet.TEAM1));
-        mockBets.add(new UserBetsOnGame(6, 0, Bet.TEAM2));
-        mockBets.add(new UserBetsOnGame(7, 0, Bet.DRAW));
-        mockBets.add(new UserBetsOnGame(7, 2, Bet.TEAM1));
-        mockBets.add(new UserBetsOnGame(7, 2, Bet.TEAM2));
-        mockBets.add(new UserBetsOnGame(7, 2, Bet.DRAW));
+        mockBets.add(new UserBetsOnGame(6, 0, Bet.TEAM1, LocalDateTime.parse("2021-05-01T15:00:00")));
+        mockBets.add(new UserBetsOnGame(6, 1, Bet.TEAM2, LocalDateTime.parse("2021-05-01T15:00:00")));
+        mockBets.add(new UserBetsOnGame(7, 0, Bet.DRAW, LocalDateTime.parse("2021-05-01T15:00:00")));
+        mockBets.add(new UserBetsOnGame(7, 1, Bet.TEAM1, LocalDateTime.parse("2021-05-01T15:00:00")));
+        mockBets.add(new UserBetsOnGame(7, 2, Bet.TEAM2, LocalDateTime.parse("2021-05-01T15:00:00")));
         mockBets.add(new UserBetsOnGame(999, 2, Bet.DRAW, LocalDateTime.parse("2021-07-01T15:00:00")));
         mockBets.add(new UserBetsOnGame(999, 2, Bet.DRAW, LocalDateTime.parse("2021-07-01T15:50:00")));
         mockBets.add(new UserBetsOnGame(999, 2, Bet.DRAW, LocalDateTime.parse("2021-07-01T16:34:00")));
@@ -113,6 +110,7 @@ public class Repository {
         return 0;
     }
 
+
     public void FinalizeBets(int gameId, Bet b) {
         for (UserBetsOnGame ub : mockBets) {
             if (ub.getGameId() == gameId) {
@@ -120,6 +118,14 @@ public class Repository {
                 AddPointsToUser(ub.getUserId(), ub.getPoints());
             }
         }
+    }
+
+    public void RecalculateBets() {
+        for (var u : mockUsers) {
+            u.setScore(0);
+        }
+
+        FinalizeAllBets();
     }
 
     public void FinalizeAllBets() {
@@ -229,6 +235,9 @@ public class Repository {
         for (var g : mockGames) {
             if (g.getId() == game.getId()) {
                 g.setName(game.getName());
+                g.setT1(game.getT1());
+                g.setT2(game.getT2());
+                g.setTime(game.getTime());
                 g.setScoreT1(game.getScoreT1());
                 g.setScoreT2(game.getScoreT2());
                 break;
@@ -237,7 +246,7 @@ public class Repository {
     }
 
     public void DeleteGame(Game game) {
-        mockGames.remove(game);
+        mockGames.removeIf((g) -> g.getId() == game.getId());
     }
 
     public void CreateUser(User user) {

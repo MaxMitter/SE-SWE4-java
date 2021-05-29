@@ -48,6 +48,14 @@ public class GameListEntryController {
         boolean isLive = false;
         boolean isOver = false;
 
+        var bets = ServiceController.bettingServiceInstance().getBetsByGameId(g.getId());
+        Bet currentGameBet = Bet.NONE;
+        for (var b : bets) {
+            if (b.getUserId() == Startup.GetCurrentUser().getId()) {
+                currentGameBet = b.getBet();
+            }
+        }
+
         VBox box = (VBox) newElem.getChildrenUnmodifiable().get(0);
 
         var gameInfo = (HBox) box.getChildren().get(0);
@@ -83,21 +91,25 @@ public class GameListEntryController {
         // Team 1 Name label
         var t1Name = (Label) team1.getChildren().get(0);
         t1Name.setText(g.getT1().getName());
+        if (currentGameBet == Bet.TEAM1) t1Name.setStyle("-fx-background-color: green;");
         // Team 1 score if game is live
         if (isLive || isOver) {
             var t1Score = (Label) team1.getChildren().get(2);
             t1Score.setText(Integer.toString(g.getScoreT1()));
         }
 
+        var lblDraw = (Label) ((HBox) box.getChildren().get(2)).getChildren().get(0);
         if (isOver) {
-            var lblDraw = (Label) ((HBox) box.getChildren().get(2)).getChildren().get(0);
             lblDraw.setVisible(false);
+        } else {
+            if (currentGameBet == Bet.DRAW) lblDraw.setStyle("-fx-background-color: green;");
         }
 
         var team2 = (HBox) box.getChildren().get(3);
         // Team 2 Name label
         var t2Name = (Label) team2.getChildren().get(0);
         t2Name.setText(g.getT2().getName());
+        if (currentGameBet == Bet.TEAM2) t2Name.setStyle("-fx-background-color: green;");
         // Team 2 score if game is live
         if (isLive || isOver) {
             var t2Score = (Label) team2.getChildren().get(2);
@@ -134,53 +146,62 @@ public class GameListEntryController {
         }
     }
 
+    private void updateLabels(Bet bet) {
+        if (canBetOnGame(Integer.parseInt(lbl_gameId.getText()))) {
+            switch (bet) {
+                case TEAM1:
+                    if (lbl_team1.getStyle().contains("green")) {
+                        lbl_team1.setStyle("-fx-background-color: none;");
+                    } else {
+                        lbl_team1.setStyle("-fx-background-color: green;");
+                        lbl_team2.setStyle("-fx-background-color: none;");
+                        lbl_draw.setStyle("-fx-background-color: none;");
+                    }
+                    break;
+                case TEAM2:
+                    if (lbl_team2.getStyle().contains("green")) {
+                        lbl_team2.setStyle("-fx-background-color: none;");
+                    } else {
+                        lbl_team2.setStyle("-fx-background-color: green;");
+                        lbl_team1.setStyle("-fx-background-color: none;");
+                        lbl_draw.setStyle("-fx-background-color: none;");
+                    }
+                    break;
+                case DRAW:
+                    if (lbl_draw.getStyle().contains("green")) {
+                        lbl_draw.setStyle("-fx-background-color: none;");
+                    } else {
+                        lbl_draw.setStyle("-fx-background-color: green;");
+                        lbl_team1.setStyle("-fx-background-color: none;");
+                        lbl_team2.setStyle("-fx-background-color: none;");
+                    }
+                    break;
+            }
+
+            UpdateBets();
+        }
+    }
+
     @FXML
     public void lblTeam1Clicked(MouseEvent event) {
-        if (canBetOnGame(Integer.parseInt(lbl_gameId.getText()))) {
-            if (lbl_team1.getStyle().contains("green")) {
-                lbl_team1.setStyle("-fx-background-color: none;");
-            } else {
-                lbl_team1.setStyle("-fx-background-color: green;");
-                lbl_team2.setStyle("-fx-background-color: none;");
-                lbl_draw.setStyle("-fx-background-color: none;");
-            }
-        }
-        UpdateBets();
+        updateLabels(Bet.TEAM1);
     }
 
     @FXML
     public void lblTeam2Clicked(MouseEvent event) {
-        if (canBetOnGame(Integer.parseInt(lbl_gameId.getText()))) {
-            if (lbl_team2.getStyle().contains("green")) {
-                lbl_team2.setStyle("-fx-background-color: none;");
-            } else {
-                lbl_team2.setStyle("-fx-background-color: green;");
-                lbl_team1.setStyle("-fx-background-color: none;");
-                lbl_draw.setStyle("-fx-background-color: none;");
-            }
-        }
-        UpdateBets();
+        updateLabels(Bet.TEAM2);
     }
 
     @FXML
     public void lblDrawClicked(MouseEvent mouseEvent) {
-        if (canBetOnGame(Integer.parseInt(lbl_gameId.getText()))) {
-            if (lbl_draw.getStyle().contains("green")) {
-                lbl_draw.setStyle("-fx-background-color: none;");
-            } else {
-                lbl_draw.setStyle("-fx-background-color: green;");
-                lbl_team1.setStyle("-fx-background-color: none;");
-                lbl_team2.setStyle("-fx-background-color: none;");
-            }
-        }
-        UpdateBets();
+        updateLabels(Bet.DRAW);
     }
 
     public void UpdateBets() {
         Bet b = Bet.NONE;
         if (lbl_team1.getStyle().contains("green")) b = Bet.TEAM1;
-        if (lbl_team2.getStyle().contains("green")) b = Bet.TEAM2;
-        if (lbl_draw.getStyle().contains("green")) b = Bet.DRAW;
+        else if (lbl_team2.getStyle().contains("green")) b = Bet.TEAM2;
+        else if (lbl_draw.getStyle().contains("green")) b = Bet.DRAW;
         try {
             ServiceController.bettingServiceInstance().addBet(Startup.GetCurrentUser().getId(), Integer.parseInt(lbl_gameId.getText()), b);
         } catch (RemoteException e) {

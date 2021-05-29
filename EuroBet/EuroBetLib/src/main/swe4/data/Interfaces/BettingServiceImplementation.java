@@ -81,7 +81,7 @@ public class BettingServiceImplementation implements BettingService {
 
     @Override
     public void finalizeScores() throws RemoteException {
-        Repository.Instance().FinalizeAllBets();
+        Repository.Instance().RecalculateBets();
     }
 
     @Override

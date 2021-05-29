@@ -19,13 +19,11 @@ public class GameServiceImplementation implements GameService {
     public void updateGame(Game game) throws RemoteException {
         System.out.println("Server got update notice.");
         Repository.Instance().UpdateGame(game);
-        Server.GetInstance().updateGame(game);
     }
 
     @Override
     public void deleteGame(Game game) throws RemoteException {
         Repository.Instance().DeleteGame(game);
-        Server.GetInstance().deleteGame(game);
     }
 
     @Override

@@ -5,11 +5,10 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.*;
 import javafx.scene.control.*;
+import javafx.scene.input.MouseEvent;
 import main.swe4.Startup;
 import main.swe4.data.Entities.Game;
 import main.swe4.data.Entities.Pair;
-import main.swe4.data.Interfaces.Callback;
-import main.swe4.gui.services.CallbackImplementation;
 import main.swe4.gui.services.ServiceController;
 
 import java.io.IOException;
@@ -33,8 +32,7 @@ public class GameListController {
     }
 
     public static void LoadScene() {
-        if (scene == null)
-            scene = new Scene(rootElement);
+        scene = new Scene(rootElement);
 
         Startup.SetScene(scene);
     }
@@ -42,9 +40,6 @@ public class GameListController {
     @FXML
     public void initialize() {
         try {
-            Callback callback = new CallbackImplementation(this);
-            UnicastRemoteObject.exportObject(callback, 0);
-            ServiceController.registerCallback(callback);
             InitGameList();
             InitHighScoreList();
         } catch (IOException ex) {
@@ -85,9 +80,7 @@ public class GameListController {
     }
 
     private void InitGameList() throws IOException {
-        if (gameList == null) {
-            gameList = FXCollections.observableArrayList();
-        }
+        gameList = FXCollections.observableArrayList();
 
         var games = ServiceController.gameServiceInstance().getAllGames();
 
@@ -137,6 +130,14 @@ public class GameListController {
             list_Games.refresh();
         } else {
             System.out.println("Game not found in list.");
+        }
+    }
+
+    public void btnRefreshClick(MouseEvent mouseEvent) {
+        try {
+            InitGameList();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 }

@@ -15,13 +15,17 @@ public class Game implements Serializable {
     private int scoreT2;
 
     public Game(int Id, String Name, Team team1, Team team2, LocalDateTime dateTime) {
+        this(Id, Name, team1, team2, dateTime, 0,0);
+    }
+
+    public Game(int Id, String Name, Team team1, Team team2, LocalDateTime dateTime, int score1, int score2) {
         id = Id;
         name = Name;
         t1 = team1;
         t2 = team2;
         time = dateTime.truncatedTo(ChronoUnit.MINUTES);
-        scoreT1 = 0;
-        scoreT2 = 0;
+        scoreT1 = score1;
+        scoreT2 = score2;
     }
 
     public int getId() {

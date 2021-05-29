@@ -3,7 +3,6 @@ package main.swe4.gui.controller;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.*;
 import javafx.scene.control.*;
@@ -135,7 +134,7 @@ public class AdminViewController {
             final var value = event.getNewValue().isEmpty() ? event.getOldValue() : event.getNewValue();
             var g = (Game) event.getTableView().getItems().get(event.getTablePosition().getRow());
             g.setName(value);
-            updateGame(g);
+            UpdateGame(g);
             tbl_Games.refresh();
         });
 
@@ -145,7 +144,7 @@ public class AdminViewController {
             final var value = event.getNewValue() == null ? event.getOldValue() : event.getNewValue();
             var g = (Game) event.getTableView().getItems().get(event.getTablePosition().getRow());
             g.setT1(value);
-            updateGame(g);
+            UpdateGame(g);
             tbl_Games.refresh();
         });
 
@@ -155,7 +154,7 @@ public class AdminViewController {
             final var value = event.getNewValue() == null ? event.getOldValue() : event.getNewValue();
             var g = (Game) event.getTableView().getItems().get(event.getTablePosition().getRow());
             g.setT2(value);
-            updateGame(g);
+            UpdateGame(g);
             tbl_Games.refresh();
         });
 
@@ -165,7 +164,7 @@ public class AdminViewController {
             final var value = event.getNewValue() == null ? event.getOldValue() : event.getNewValue();
             var g = (Game) event.getTableView().getItems().get(event.getTablePosition().getRow());
             g.setTime(value);
-            updateGame(g);
+            UpdateGame(g);
             tbl_Games.refresh();
         });
 
@@ -175,7 +174,7 @@ public class AdminViewController {
             final var value = event.getNewValue() == null ? event.getOldValue() : event.getNewValue();
             var g = (Game) event.getTableView().getItems().get(event.getTablePosition().getRow());
             g.setScoreT1(value);
-            updateGame(g);
+            UpdateGame(g);
             tbl_Games.refresh();
         });
 
@@ -185,7 +184,7 @@ public class AdminViewController {
             final var value = event.getNewValue() == null ? event.getOldValue() : event.getNewValue();
             var g = (Game) event.getTableView().getItems().get(event.getTablePosition().getRow());
             g.setScoreT2(value);
-            updateGame(g);
+            UpdateGame(g);
             tbl_Games.refresh();
         });
 
@@ -198,7 +197,7 @@ public class AdminViewController {
                     {
                         btn.setOnAction((ActionEvent event) -> {
                             Game g = getTableView().getItems().get(getIndex());
-                            deleteGame(g);
+                            DeleteGame(g);
                             list_Games.remove(g);
                         });
                     }
@@ -219,7 +218,7 @@ public class AdminViewController {
         tbl_Games.setItems(list_Games);
     }
 
-    private void deleteGame(Game g) {
+    private void DeleteGame(Game g) {
         try {
             ServiceController.gameServiceInstance().deleteGame(g);
         } catch (RemoteException e) {
@@ -227,9 +226,8 @@ public class AdminViewController {
         }
     }
 
-    private void updateGame(Game g) {
+    private void UpdateGame(Game g) {
         try {
-            System.out.println("Sending update notice.");
             ServiceController.gameServiceInstance().updateGame(g);
         } catch (RemoteException e) {
             e.printStackTrace();
