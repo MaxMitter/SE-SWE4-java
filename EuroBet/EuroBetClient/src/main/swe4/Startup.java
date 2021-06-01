@@ -10,8 +10,10 @@ import main.swe4.gui.controller.GameListController;
 import main.swe4.gui.controller.GameListEntryController;
 import main.swe4.gui.controller.LoginController;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.util.Objects;
 
 public class Startup extends Application {
 
@@ -49,18 +51,22 @@ public class Startup extends Application {
     }
 
     private void LoadLoginFxml() throws IOException {
-        Parent loginFxml = FXMLLoader.load(getClass().getResource("gui/fxml/login.fxml"));
+        var path = new File("src/main/swe4/gui/fxml/login.fxml").toURI().toURL();
+        Parent loginFxml = FXMLLoader.load(path);
         LoginController.SetFxml(loginFxml);
     }
 
     public static void LoadGameListEntryFxml() throws IOException {
-        gameListEntryUrl = Startup.class.getResource("gui/fxml/gameListEntry.fxml");
+        gameListEntryUrl = new File("src/main/swe4/gui/fxml/gameListEntry.fxml").toURI().toURL();
+        System.out.println(gameListEntryUrl);
         Parent gameListEntryFxml = FXMLLoader.load(gameListEntryUrl);
         GameListEntryController.SetFxml(gameListEntryFxml);
     }
 
     public static void LoadGameListFxml() throws IOException {
-        Parent gameListFxml = FXMLLoader.load(Startup.class.getResource("gui/fxml/gameList.fxml"));
+        var path = new File("src/main/swe4/gui/fxml/gameList.fxml").toURI().toURL();
+        System.out.println(path);
+        Parent gameListFxml = FXMLLoader.load(path);
         GameListController.SetFxml(gameListFxml);
     }
 

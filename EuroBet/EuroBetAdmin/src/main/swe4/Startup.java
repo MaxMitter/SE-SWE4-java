@@ -7,6 +7,7 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import main.swe4.gui.controller.AdminViewController;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 
@@ -46,7 +47,8 @@ public class Startup extends Application {
     }
 
     private void LoadFxmlFiles() throws IOException {
-        Parent adminViewFxml = FXMLLoader.load(getClass().getResource("gui/fxml/adminView.fxml"));
+        var path = new File("src/main/swe4/gui/fxml/adminView.fxml").toURI().toURL();
+        Parent adminViewFxml = FXMLLoader.load(path);
         AdminViewController.SetFxml(adminViewFxml);
     }
 
