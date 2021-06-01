@@ -1,6 +1,5 @@
 package main.swe4.data.Interfaces;
 
-import main.swe4.Exceptions.UserAlreadyExistsException;
 import main.swe4.data.Entities.User;
 import main.swe4.data.Repository;
 

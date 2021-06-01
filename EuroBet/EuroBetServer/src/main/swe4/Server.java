@@ -1,6 +1,5 @@
 package main.swe4;
 
-import main.swe4.data.Entities.Game;
 import main.swe4.data.Interfaces.*;
 
 import java.net.MalformedURLException;

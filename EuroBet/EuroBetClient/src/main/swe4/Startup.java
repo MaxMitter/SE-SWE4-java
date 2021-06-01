@@ -5,7 +5,6 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import main.swe4.data.Entities.Game;
 import main.swe4.data.Entities.User;
 import main.swe4.gui.controller.GameListController;
 import main.swe4.gui.controller.GameListEntryController;
@@ -13,7 +12,6 @@ import main.swe4.gui.controller.LoginController;
 
 import java.io.IOException;
 import java.net.URL;
-import java.rmi.RemoteException;
 
 public class Startup extends Application {
 

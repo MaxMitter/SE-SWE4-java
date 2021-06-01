@@ -4,8 +4,8 @@ import java.io.Serializable;
 
 public class Team implements Serializable {
 
-    private int id;
-    private String name;
+    private final int id;
+    private final String name;
 
     public Team(int Id, String Name) {
         id = Id;

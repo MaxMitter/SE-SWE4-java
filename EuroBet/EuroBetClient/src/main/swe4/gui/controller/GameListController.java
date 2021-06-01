@@ -13,7 +13,6 @@ import main.swe4.gui.services.ServiceController;
 
 import java.io.IOException;
 import java.rmi.RemoteException;
-import java.rmi.server.UnicastRemoteObject;
 import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.Collections;
@@ -108,7 +107,7 @@ public class GameListController {
         gameList.removeIf(p -> g.getId() == GameListEntryController.GetGameId(p));
     }
 
-    public void UpdateGame(Game g) throws RemoteException {
+    public void UpdateGame(Game g) {
         System.out.println("Updating game...");
         int current = 0;
         var currElement = gameList.get(current);

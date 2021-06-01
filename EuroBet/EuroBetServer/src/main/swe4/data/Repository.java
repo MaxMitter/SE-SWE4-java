@@ -1,6 +1,5 @@
 package main.swe4.data;
 
-import main.swe4.Exceptions.*;
 import main.swe4.data.Entities.*;
 
 import java.time.LocalDateTime;
@@ -168,35 +167,6 @@ public class Repository {
             }
         }
         return null;
-    }
-
-    public int Login(String userName, String password) throws UserNotFoundException {
-        for (User user : mockUsers) {
-            if (user.getUserName().equals(userName)) {
-                if (user.checkPassword(password))
-                    return user.getId();
-            }
-        }
-        throw new UserNotFoundException();
-    }
-
-    public boolean IsValidLogin(String userName, String password) throws UserNotFoundException {
-        for (User user : mockUsers) {
-            if (user.getUserName().equals(userName)) {
-                return user.checkPassword(password);
-            }
-        }
-        throw new UserNotFoundException();
-    }
-
-    public void CreateNewUser(String firstName, String lastName, String name, String pw) throws UserAlreadyExistsException {
-        for (User user : mockUsers) {
-            if (user.getUserName().equals(name)) {
-                throw new UserAlreadyExistsException();
-            }
-        }
-
-        mockUsers.add(new User(nextId++, firstName, lastName, name, pw));
     }
 
     public ArrayList<Game> getAllGames() {

@@ -4,7 +4,7 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/EuroBetAdmin/EuroBetAdmin.iml" filepath="$PROJECT_DIR$/EuroBetAdmin/EuroBetAdmin.iml" />
       <module fileurl="file://$PROJECT_DIR$/EuroBetClient/EuroBetClient.iml" filepath="$PROJECT_DIR$/EuroBetClient/EuroBetClient.iml" />
-      <module fileurl="file://$PROJECT_DIR$/EuroBetLib/EuroBetLib.iml" filepath="$PROJECT_DIR$/EuroBetLib/EuroBetLib.iml" />
+      <module fileurl="file://$PROJECT_DIR$/EuroBetServer/EuroBetServer.iml" filepath="$PROJECT_DIR$/EuroBetServer/EuroBetServer.iml" />
     </modules>
   </component>
 </project>

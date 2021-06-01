@@ -6,7 +6,7 @@ import java.time.temporal.ChronoUnit;
 
 public class Game implements Serializable {
 
-    private int id;
+    private final int id;
     private String name;
     private Team t1;
     private Team t2;
