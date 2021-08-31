@@ -1,0 +1,8 @@
+.auto-size {
+    -fx-pref-width: 100%;
+    -fx-pref-height: 100%;
+}
+
+.table-view .table-cell {
+    -fx-font-size: 16px;
+}
